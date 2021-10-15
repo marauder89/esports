@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/esports/static/css/main.f09a1402.chunk.css",
-    "main.js": "/esports/static/js/main.6d2c062b.chunk.js",
-    "main.js.map": "/esports/static/js/main.6d2c062b.chunk.js.map",
+    "main.js": "/esports/static/js/main.af8e7b5a.chunk.js",
+    "main.js.map": "/esports/static/js/main.af8e7b5a.chunk.js.map",
     "runtime-main.js": "/esports/static/js/runtime-main.4fcba2d5.js",
     "runtime-main.js.map": "/esports/static/js/runtime-main.4fcba2d5.js.map",
     "static/js/2.965198fb.chunk.js": "/esports/static/js/2.965198fb.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.4fcba2d5.js",
     "static/js/2.965198fb.chunk.js",
     "static/css/main.f09a1402.chunk.css",
-    "static/js/main.6d2c062b.chunk.js"
+    "static/js/main.af8e7b5a.chunk.js"
   ]
 }
