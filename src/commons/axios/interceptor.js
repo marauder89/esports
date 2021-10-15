@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "http://ec2-13-125-224-246.ap-northeast-2.compute.amazonaws.com";
+// const baseUrl = "http://ec2-13-125-224-246.ap-northeast-2.compute.amazonaws.com";
+const baseUrl = "http://localhost:5554";
 
 const _instance = axios.create({ baseURL: baseUrl, timeout: 10000 });
 
