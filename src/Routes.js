@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { P1, P2, P3 } from "./components/index";
+import { P1, P2, P3 } from "./pages/index";
 
 export default function Routes() {
   return (

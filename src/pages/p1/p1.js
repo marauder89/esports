@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
+import { LGA_1_1 } from "../../services/index";
 
 const videoState = atom({
   key: "videoState",
@@ -21,12 +22,15 @@ const P1 = () => {
       const capture = captureArea.current;
       const canvas = document.createElement("canvas");
 
-      canvas.width = capture.width;
-      canvas.height = capture.height;
-      canvas.getContext("2d").drawImage(capture, 0, 0, canvas.width, canvas.height);
+      canvas.width = capture.width * 2;
+      canvas.height = capture.height * 2;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(capture, 0, 0, canvas.width, canvas.height);
 
       const dataURL = canvas.toDataURL();
       setBase64(dataURL);
+      console.log(capture.currentTime);
     }, 5000);
 
     return () => {
@@ -39,6 +43,24 @@ const P1 = () => {
     if (selectFile) {
       const blob = URL.createObjectURL(selectFile);
       setVideoSource({ src: blob, type: selectFile.type });
+
+      const execute = async () => {
+        try {
+          const params = {
+            source: "C:\\users\\downloads\\",
+            model: "Random Forest",
+            options: {
+              opA: true,
+              opB: false,
+              opC: true,
+            },
+          };
+          await LGA_1_1(params);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      execute();
     }
   };
 
