@@ -7,7 +7,7 @@ const _instance = axios.create({ baseURL: baseUrl, timeout: 10000 });
 
 _instance.interceptors.request.use(
   (req) => {
-    console.info(req.method, req.url, req.data);
+    //console.info(req.method, req.url, req.data);
     return req;
   },
   (err) => {
