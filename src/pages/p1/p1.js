@@ -1,7 +1,14 @@
-import { useRef, useEffect, useState, useCallback, useReducer } from "react";
+import { useRef, useEffect, useState, useCallback, useReducer, Fragment } from "react";
+import moment from "moment";
 import { LGA_1_1, LGA_1_2 } from "../../services/index";
 import { chartModel } from "../../model/index";
-import { WinPredictionChart } from "./chart";
+
+import { WinPredictionChart } from "./winPredictionChart";
+import { GoldChart } from "./goldChart";
+import { ChampionKillChart } from "./championKillChart";
+import { TowerKillChart } from "./towerKillChart";
+import { LevelChart } from "./levelChart";
+import { SkillChart } from "./skillChart";
 
 const reducer = (state, newState) => ({ ...state, ...newState });
 
@@ -10,6 +17,7 @@ const P1 = () => {
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
   const [base64, setBase64] = useState("");
   const [videoPlayState, setVideoPlayState] = useState(false);
+
   const interval = useRef();
   const captureArea = useRef();
 
@@ -44,8 +52,29 @@ const P1 = () => {
             b64encoded: dataURL,
             index: Math.floor(capture.currentTime),
           };
+
           const _chartData = await LGA_1_2(params);
-          setChartData({ winPredictionData: { blue: _chartData.blue_win_prediction, purple: _chartData.purple_win_prediction } });
+          const hour = Number(_chartData.time_stamp.split(":")[0]);
+          const minute = Number(_chartData.time_stamp.split(":")[1]);
+          const second = Number(_chartData.time_stamp.split(":")[2]);
+
+          let dateTime = moment(0);
+          dateTime.add(hour, "hour").add(minute, "minute").add(second, "second");
+          //blue_total_champion_kill
+          setChartData({
+            winPredictionData: [...chartData.winPredictionData, { blue: _chartData.blue_win_prediction, purple: _chartData.purple_win_prediction, dateTime: dateTime.valueOf() }],
+            goldData: [...chartData.goldData, { blue: _chartData.blue_total_gold, purple: _chartData.purple_total_gold, dateTime: dateTime.valueOf() }],
+            championKillData: { blue: _chartData.blue_total_champion_kill, purple: _chartData.purple_total_champion_kill },
+            towerKillData: { blue: _chartData.blue_total_tower_kill, purple: _chartData.purple_total_tower_kill },
+            levelData: {
+              blue: [_chartData.blue_level_top, _chartData.blue_level_jungle, _chartData.blue_level_middle, _chartData.blue_level_bottom, _chartData.blue_level_support],
+              purple: [_chartData.purple_level_top, _chartData.purple_level_jungle, _chartData.purple_level_middle, _chartData.purple_level_bottom, _chartData.purple_level_support],
+            },
+            skillData: {
+              blue: [_chartData.blue_skill_top, _chartData.blue_skill_jungle, _chartData.blue_skill_middle, _chartData.blue_skill_bottom, _chartData.blue_skill_support],
+              purple: [_chartData.purple_skill_top, _chartData.purple_skill_jungle, _chartData.purple_skill_middle, _chartData.purple_skill_bottom, _chartData.purple_skill_support],
+            },
+          });
         };
         getChartData();
       }
@@ -56,7 +85,7 @@ const P1 = () => {
       capture.removeEventListener("play", videoPlayStateCallBack, false);
       capture.removeEventListener("pause", videoPlayStateCallBack, false);
     };
-  }, [videoPlayState, videoPlayStateCallBack]);
+  }, [videoPlayState, videoPlayStateCallBack, chartData]);
 
   const onChange = useCallback((e) => {
     const selectFile = e.target.files[0];
@@ -64,7 +93,7 @@ const P1 = () => {
       const blob = URL.createObjectURL(selectFile);
       setVideoSource({ src: blob, type: selectFile.type });
 
-      const execute = async () => {
+      const init = async () => {
         const params = {
           source: "C:\\users\\downloads\\",
           model: "Random Forest",
@@ -76,19 +105,28 @@ const P1 = () => {
         };
         await LGA_1_1(params);
       };
-      execute();
+      init();
     }
   }, []);
 
   return (
-    <div style={{ width: "50%" }}>
-      <img src={base64} height="45" width="80" alt="" />
-      <br />
-      <video ref={captureArea} autoPlay={true} controls={true} height="450" width="800" src={videoSource.src} type={videoSource.type} muted={true} />
+    <Fragment>
+      <div style={{ width: "48%", float: "left" }}>
+        <img src={base64} height="45" width="80" alt="" />
+        <br />
+        <video ref={captureArea} autoPlay={true} controls={true} height="450" width="800" src={videoSource.src} type={videoSource.type} muted={true} />
 
-      <input type="file" onChange={onChange} />
-      <WinPredictionChart chartData={chartData.winPredictionData}></WinPredictionChart>
-    </div>
+        <input type="file" onChange={onChange} />
+        <WinPredictionChart chartData={chartData.winPredictionData}></WinPredictionChart>
+      </div>
+      <div style={{ width: "48%", float: "right" }}>
+        <GoldChart chartData={chartData.goldData}></GoldChart>
+        <ChampionKillChart chartData={chartData.championKillData}></ChampionKillChart>
+        <TowerKillChart chartData={chartData.towerKillData}></TowerKillChart>
+        <LevelChart chartData={chartData.levelData}></LevelChart>
+        <SkillChart chartData={chartData.skillData}></SkillChart>
+      </div>
+    </Fragment>
   );
 };
 

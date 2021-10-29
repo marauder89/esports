@@ -1,9 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "../../commons/constants";
 
 // const baseUrl = "http://ec2-13-125-224-246.ap-northeast-2.compute.amazonaws.com";
-const baseUrl = "http://localhost:5554";
 
-const _instance = axios.create({ baseURL: baseUrl, timeout: 10000 });
+const _instance = axios.create({ baseURL: BASE_URL, timeout: 10000 });
 
 _instance.interceptors.request.use(
   (req) => {
