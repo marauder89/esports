@@ -4,7 +4,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 import { BLUE_HEX_CODE, PURPLE_HEX_CODE } from "../../commons/constants";
-import { chartDataState } from "../../model";
+import { chartDataState } from "../../store";
 
 const SkillChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).skillData;

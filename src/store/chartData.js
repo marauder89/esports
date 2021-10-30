@@ -13,7 +13,7 @@ export const chartDataState = atom({
   },
 });
 
-export const chartDataStateSelector = selector({
+export const chartDataSelector = selector({
   key: "chartDataStateSelector",
   set: ({ get: getRecoilValue, set: setRecoilState }, newValue) => {
     const hour = Number(newValue.time_stamp.split(":")[0]);

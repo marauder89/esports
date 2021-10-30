@@ -4,7 +4,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 import { BLUE_HEX_CODE, PURPLE_HEX_CODE } from "../../commons/constants";
-import { chartDataState } from "../../model";
+import { chartDataState } from "../../store";
 
 const LevelChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).levelData;

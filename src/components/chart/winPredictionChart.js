@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import moment from "moment";
 
 import { BLUE_HEX_CODE, PURPLE_HEX_CODE } from "../../commons/constants";
-import { chartDataState } from "../../model";
+import { chartDataState } from "../../store";
 
 //실시간 게임 결과 예측
 const WinPredictionChart = memo(() => {

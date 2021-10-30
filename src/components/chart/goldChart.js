@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import moment from "moment";
 
 import { BLUE_HEX_CODE, PURPLE_HEX_CODE } from "../../commons/constants";
-import { chartDataState } from "../../model";
+import { chartDataState } from "../../store";
 
 const GoldChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).goldData;

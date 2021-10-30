@@ -2,18 +2,12 @@ import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 import { useSetRecoilState } from "recoil";
 import moment from "moment";
 
-import { WinPredictionChart } from "../../components/chart/winPredictionChart";
-import { GoldChart } from "../../components/chart/goldChart";
-import { ChampionKillChart } from "../../components/chart/championKillChart";
-import { TowerKillChart } from "../../components/chart/towerKillChart";
-import { LevelChart } from "../../components/chart/levelChart";
-import { SkillChart } from "../../components/chart/skillChart";
-
-import { chartDataStateSelector } from "../../model/index";
-import { lga_1_1, lga_1_2 } from "../../services/index";
+import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart } from "../../components/index";
+import { chartDataSelector } from "../../store/index";
+import { LGA_1_1, LGA_1_2 } from "../../services/index";
 
 const P1 = () => {
-  const setChartData = useSetRecoilState(chartDataStateSelector);
+  const setChartData = useSetRecoilState(chartDataSelector);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
   const [base64, setBase64] = useState("");
   const [videoPlayState, setVideoPlayState] = useState(false);
@@ -53,7 +47,7 @@ const P1 = () => {
             index: Math.floor(capture.currentTime),
           };
 
-          const _chartData = await lga_1_2(params);
+          const _chartData = await LGA_1_2(params);
           const hour = Number(_chartData.time_stamp.split(":")[0]);
           const minute = Number(_chartData.time_stamp.split(":")[1]);
           const second = Number(_chartData.time_stamp.split(":")[2]);
@@ -90,7 +84,7 @@ const P1 = () => {
             opC: true,
           },
         };
-        await lga_1_1(params);
+        await LGA_1_1(params);
       };
       init();
     }

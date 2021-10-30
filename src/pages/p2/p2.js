@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState, useCallback, useReducer, Fragment } from "react";
 import moment from "moment";
 
-import { ier_1_1, ier_1_2 } from "../../services/index";
-import { chartModel } from "../../model/index";
+import { IER_1_1, IER_1_2 } from "../../services/index";
+import { chartModel } from "../../store/index";
 
 // import { WinPredictionChart } from "./winPredictionChart";
 // import { GoldChart } from "./goldChart";
@@ -54,7 +54,7 @@ const P2 = () => {
             index: Math.floor(capture.currentTime),
           };
 
-          const data = await ier_1_2(params);
+          const data = await IER_1_2(params);
 
           // const hour = Number(_chartData.time_stamp.split(":")[0]);
           // const minute = Number(_chartData.time_stamp.split(":")[1]);
@@ -105,7 +105,7 @@ const P2 = () => {
             opC: true,
           },
         };
-        await ier_1_1(params);
+        await IER_1_1(params);
       };
       init();
     }
