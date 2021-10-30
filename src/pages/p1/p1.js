@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 import { useSetRecoilState } from "recoil";
-import moment from "moment";
 
 import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart } from "../../components/index";
 import { chartDataSelector } from "../../store/index";
@@ -48,13 +47,6 @@ const P1 = () => {
           };
 
           const _chartData = await LGA_1_2(params);
-          const hour = Number(_chartData.time_stamp.split(":")[0]);
-          const minute = Number(_chartData.time_stamp.split(":")[1]);
-          const second = Number(_chartData.time_stamp.split(":")[2]);
-
-          let dateTime = moment(0);
-          dateTime.add(hour, "hour").add(minute, "minute").add(second, "second");
-
           setChartData(_chartData);
         };
         getChartData();
@@ -98,14 +90,14 @@ const P1 = () => {
         <video ref={captureArea} autoPlay={true} controls={true} height="450" width="800" src={videoSource.src} type={videoSource.type} muted={true} />
 
         <input type="file" onChange={onChange} />
-        <WinPredictionChart></WinPredictionChart>
+        <WinPredictionChart />
       </div>
       <div style={{ width: "48%", float: "right" }}>
-        <GoldChart></GoldChart>
-        <ChampionKillChart></ChampionKillChart>
-        <TowerKillChart></TowerKillChart>
-        <LevelChart></LevelChart>
-        <SkillChart></SkillChart>
+        <GoldChart />
+        <ChampionKillChart />
+        <TowerKillChart />
+        <LevelChart />
+        <SkillChart />
       </div>
     </Fragment>
   );

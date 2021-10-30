@@ -1,17 +1,6 @@
-import { useRef, useEffect, useState, useCallback, useReducer, Fragment } from "react";
-import moment from "moment";
+import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 
 import { IER_1_1, IER_1_2 } from "../../services/index";
-import { chartModel } from "../../store/index";
-
-// import { WinPredictionChart } from "./winPredictionChart";
-// import { GoldChart } from "./goldChart";
-// import { ChampionKillChart } from "./championKillChart";
-// import { TowerKillChart } from "./towerKillChart";
-// import { LevelChart } from "./levelChart";
-// import { SkillChart } from "./skillChart";
-
-const reducer = (state, newState) => ({ ...state, ...newState });
 
 const P2 = () => {
   // const [chartData, setChartData] = useReducer(reducer, chartModel);
