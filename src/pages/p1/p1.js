@@ -1,19 +1,19 @@
-import { useRef, useEffect, useState, useCallback, useReducer, Fragment } from "react";
+import { useRef, useEffect, useState, useCallback, Fragment } from "react";
+import { useSetRecoilState } from "recoil";
 import moment from "moment";
-import { LGA_1_1, LGA_1_2 } from "../../services/index";
-import { chartModel } from "../../model/index";
 
-import { WinPredictionChart } from "./winPredictionChart";
-import { GoldChart } from "./goldChart";
-import { ChampionKillChart } from "./championKillChart";
-import { TowerKillChart } from "./towerKillChart";
-import { LevelChart } from "./levelChart";
-import { SkillChart } from "./skillChart";
+import { WinPredictionChart } from "../../components/chart/winPredictionChart";
+import { GoldChart } from "../../components/chart/goldChart";
+import { ChampionKillChart } from "../../components/chart/championKillChart";
+import { TowerKillChart } from "../../components/chart/towerKillChart";
+import { LevelChart } from "../../components/chart/levelChart";
+import { SkillChart } from "../../components/chart/skillChart";
 
-const reducer = (state, newState) => ({ ...state, ...newState });
+import { chartDataStateSelector } from "../../model/index";
+import { lga_1_1, lga_1_2 } from "../../services/index";
 
 const P1 = () => {
-  const [chartData, setChartData] = useReducer(reducer, chartModel);
+  const setChartData = useSetRecoilState(chartDataStateSelector);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
   const [base64, setBase64] = useState("");
   const [videoPlayState, setVideoPlayState] = useState(false);
@@ -53,28 +53,15 @@ const P1 = () => {
             index: Math.floor(capture.currentTime),
           };
 
-          const _chartData = await LGA_1_2(params);
+          const _chartData = await lga_1_2(params);
           const hour = Number(_chartData.time_stamp.split(":")[0]);
           const minute = Number(_chartData.time_stamp.split(":")[1]);
           const second = Number(_chartData.time_stamp.split(":")[2]);
 
           let dateTime = moment(0);
           dateTime.add(hour, "hour").add(minute, "minute").add(second, "second");
-          //blue_total_champion_kill
-          setChartData({
-            winPredictionData: [...chartData.winPredictionData, { blue: _chartData.blue_win_prediction, purple: _chartData.purple_win_prediction, dateTime: dateTime.valueOf() }],
-            goldData: [...chartData.goldData, { blue: _chartData.blue_total_gold, purple: _chartData.purple_total_gold, dateTime: dateTime.valueOf() }],
-            championKillData: { blue: _chartData.blue_total_champion_kill, purple: _chartData.purple_total_champion_kill },
-            towerKillData: { blue: _chartData.blue_total_tower_kill, purple: _chartData.purple_total_tower_kill },
-            levelData: {
-              blue: [_chartData.blue_level_top, _chartData.blue_level_jungle, _chartData.blue_level_middle, _chartData.blue_level_bottom, _chartData.blue_level_support],
-              purple: [_chartData.purple_level_top, _chartData.purple_level_jungle, _chartData.purple_level_middle, _chartData.purple_level_bottom, _chartData.purple_level_support],
-            },
-            skillData: {
-              blue: [_chartData.blue_skill_top, _chartData.blue_skill_jungle, _chartData.blue_skill_middle, _chartData.blue_skill_bottom, _chartData.blue_skill_support],
-              purple: [_chartData.purple_skill_top, _chartData.purple_skill_jungle, _chartData.purple_skill_middle, _chartData.purple_skill_bottom, _chartData.purple_skill_support],
-            },
-          });
+
+          setChartData(_chartData);
         };
         getChartData();
       }
@@ -85,7 +72,7 @@ const P1 = () => {
       capture.removeEventListener("play", videoPlayStateCallBack, false);
       capture.removeEventListener("pause", videoPlayStateCallBack, false);
     };
-  }, [videoPlayState, videoPlayStateCallBack, chartData]);
+  }, [videoPlayState, videoPlayStateCallBack, setChartData]);
 
   const onChange = useCallback((e) => {
     const selectFile = e.target.files[0];
@@ -103,7 +90,7 @@ const P1 = () => {
             opC: true,
           },
         };
-        await LGA_1_1(params);
+        await lga_1_1(params);
       };
       init();
     }
@@ -117,14 +104,14 @@ const P1 = () => {
         <video ref={captureArea} autoPlay={true} controls={true} height="450" width="800" src={videoSource.src} type={videoSource.type} muted={true} />
 
         <input type="file" onChange={onChange} />
-        <WinPredictionChart chartData={chartData.winPredictionData}></WinPredictionChart>
+        <WinPredictionChart></WinPredictionChart>
       </div>
       <div style={{ width: "48%", float: "right" }}>
-        <GoldChart chartData={chartData.goldData}></GoldChart>
-        <ChampionKillChart chartData={chartData.championKillData}></ChampionKillChart>
-        <TowerKillChart chartData={chartData.towerKillData}></TowerKillChart>
-        <LevelChart chartData={chartData.levelData}></LevelChart>
-        <SkillChart chartData={chartData.skillData}></SkillChart>
+        <GoldChart></GoldChart>
+        <ChampionKillChart></ChampionKillChart>
+        <TowerKillChart></TowerKillChart>
+        <LevelChart></LevelChart>
+        <SkillChart></SkillChart>
       </div>
     </Fragment>
   );

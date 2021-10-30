@@ -1,1 +1,1 @@
-export { chartModel } from "./p1/chart";
+export { chartDataState, chartDataStateSelector } from "./chartData";
