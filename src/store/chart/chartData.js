@@ -1,6 +1,5 @@
 import { atom, selector } from "recoil";
 import moment from "moment";
-import PropTypes from "prop-types";
 
 export const chartDataState = atom({
   key: "chartDataState",
@@ -45,7 +44,3 @@ export const chartDataSelector = selector({
     return get(chartDataState);
   },
 });
-
-chartDataSelector.propTypes = {
-  winPredictionData: PropTypes.string,
-};
