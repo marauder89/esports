@@ -86,7 +86,7 @@ const Streaming = memo(({ onChangeCallback, dataUrlCallback }) => {
   );
 });
 
-Streaming.prototype = {
+Streaming.propTypes = {
   onChangeCallback: PropTypes.func.isRequired,
   dataUrlCallback: PropTypes.func.isRequired,
 };

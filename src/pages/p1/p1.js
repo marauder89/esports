@@ -1,11 +1,9 @@
 import { useCallback, Fragment } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 
-import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart, Streaming } from "../../components/index";
-import { chartDataSelector } from "../../store/index";
-import { LGA_1_1, LGA_1_2 } from "../../services/index";
-
-import { playState } from "../../store";
+import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart, Streaming } from "../../components";
+import { chartDataSelector, playState } from "../../store";
+import { LGA_1_1, LGA_1_2 } from "../../services";
 
 const P1 = () => {
   const setChartData = useSetRecoilState(chartDataSelector);

@@ -1,7 +1,14 @@
-export { ChampionKillChart } from "./chart/championKillChart";
-export { GoldChart } from "./chart/goldChart";
-export { LevelChart } from "./chart/levelChart";
-export { SkillChart } from "./chart/skillChart";
-export { TowerKillChart } from "./chart/towerKillChart";
-export { WinPredictionChart } from "./chart/winPredictionChart";
-export { Streaming } from "./video/streaming";
+export { ChampionKillChart } from "./chart/ChampionKillChart";
+export { GoldChart } from "./chart/GoldChart";
+export { LevelChart } from "./chart/LevelChart";
+export { SkillChart } from "./chart/SkillChart";
+export { TowerKillChart } from "./chart/TowerKillChart";
+export { WinPredictionChart } from "./chart/WinPredictionChart";
+
+export { BuyItemEvent } from "./event/BuyItemEvent";
+export { KillBuildingEvent } from "./event/KillBuildingEvent";
+export { KillChampionEvent } from "./event/KillChampionEvent";
+export { KillObjectEvent } from "./event/KillObjectEvent";
+export { TeamFightEvent } from "./event/TeamFightEvent";
+
+export { Streaming } from "./video/Streaming";
