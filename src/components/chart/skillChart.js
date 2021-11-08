@@ -10,12 +10,15 @@ const SkillChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).skillData;
   const options = {
     chart: {
-      height: 200,
       type: "column",
+      height: 90,
+      style: {
+        margin: "0 auto",
+        width: "100%",
+      },
     },
     title: {
-      text: "Total Skill",
-      align: "left",
+      text: "",
     },
     credits: {
       enabled: false,
@@ -25,11 +28,9 @@ const SkillChart = memo(() => {
     },
     yAxis: {
       min: 0,
-      // max: 20,
       title: {
         text: "",
       },
-      // tickPositions: [0, 5, 10, 15, 20],
     },
     series: [
       {
@@ -45,19 +46,6 @@ const SkillChart = memo(() => {
     ],
     xAxis: {
       categories: ["Top", "Jungle", "Middle", "Bottom", "Support"],
-      // min: moment(0).valueOf(),
-      // max: moment(0).add(15, "minute").valueOf(),
-      // tickInterval: moment(0).add(5, "minute").valueOf(),
-      // labels: {
-      //   formatter: function () {
-      //     return Highcharts.dateFormat("%M:%S", this.value);
-      //   },
-      // },
-    },
-    tooltip: {
-      // formatter: function () {
-      //   return moment(this.x).format("mm:ss");
-      // },
     },
   };
   return <HighchartsReact highcharts={Highcharts} options={options} />;

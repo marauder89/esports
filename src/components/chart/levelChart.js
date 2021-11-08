@@ -10,12 +10,15 @@ const LevelChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).levelData;
   const options = {
     chart: {
-      height: 200,
       type: "column",
+      height: 90,
+      style: {
+        margin: "0 auto",
+        width: "100%",
+      },
     },
     title: {
-      text: "Total Level",
-      align: "left",
+      text: "",
     },
     credits: {
       enabled: false,
@@ -45,19 +48,6 @@ const LevelChart = memo(() => {
     ],
     xAxis: {
       categories: ["Top", "Jungle", "Middle", "Bottom", "Support"],
-      // min: moment(0).valueOf(),
-      // max: moment(0).add(15, "minute").valueOf(),
-      // tickInterval: moment(0).add(5, "minute").valueOf(),
-      // labels: {
-      //   formatter: function () {
-      //     return Highcharts.dateFormat("%M:%S", this.value);
-      //   },
-      // },
-    },
-    tooltip: {
-      // formatter: function () {
-      //   return moment(this.x).format("mm:ss");
-      // },
     },
   };
   return <HighchartsReact highcharts={Highcharts} options={options} />;

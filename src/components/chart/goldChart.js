@@ -11,12 +11,14 @@ const GoldChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).goldData;
   const options = {
     chart: {
-      height: 200,
       type: "line",
+      style: {
+        margin: "0 auto",
+        width: "100%",
+      },
     },
     title: {
-      text: "Total Gold",
-      align: "left",
+      text: "",
     },
     credits: {
       enabled: false,
@@ -24,15 +26,17 @@ const GoldChart = memo(() => {
     legend: {
       layout: "horizontal",
       align: "right",
-      verticalAlign: "top",
+      verticalAlign: "bottom",
+      itemStyle: {
+        fontSize: "12px",
+        fontWeight: 500,
+      },
     },
     yAxis: {
       min: 0,
-      // max: 100,
       title: {
         text: "",
       },
-      // tickPositions: [0, 25, 50, 75, 100],
     },
     series: [
       {
@@ -60,6 +64,8 @@ const GoldChart = memo(() => {
           return Highcharts.dateFormat("%M:%S", this.value);
         },
       },
+      tickWidth: 0,
+      lineWidth: 0,
     },
     tooltip: {
       formatter: function () {
@@ -67,7 +73,7 @@ const GoldChart = memo(() => {
       },
     },
   };
-  return <HighchartsReact highcharts={Highcharts} options={options} />;
+  return <HighchartsReact displayName="center-align-chart" highcharts={Highcharts} options={options} />;
 });
 
 export { GoldChart };

@@ -12,12 +12,15 @@ const WinPredictionChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).winPredictionData;
   const options = {
     chart: {
-      height: 300,
       type: "line",
+      height: 350,
+      backgroundColor: null,
+      style: {
+        width: "100%",
+      },
     },
     title: {
-      text: "실시간 게임 결과 예측",
-      align: "left",
+      text: "",
     },
     credits: {
       enabled: false,
@@ -25,7 +28,12 @@ const WinPredictionChart = memo(() => {
     legend: {
       layout: "horizontal",
       align: "right",
-      verticalAlign: "top",
+      verticalAlign: "bottom",
+      itemStyle: {
+        color: "#B8B8B8",
+        fontSize: "14px",
+        fontWeight: 600,
+      },
     },
     yAxis: {
       min: 0,
@@ -34,6 +42,12 @@ const WinPredictionChart = memo(() => {
         text: "",
       },
       tickPositions: [0, 25, 50, 75, 100],
+      labels: {
+        style: {
+          color: "#B8B8B8",
+        },
+      },
+      gridLineWidth: 0.5,
     },
     series: [
       {
@@ -60,7 +74,13 @@ const WinPredictionChart = memo(() => {
         formatter: function () {
           return Highcharts.dateFormat("%M:%S", this.value);
         },
+        style: {
+          color: "#B8B8B8",
+        },
       },
+      gridLineWidth: 0.5,
+      tickWidth: 0,
+      lineWidth: 0,
     },
     tooltip: {
       formatter: function () {

@@ -1,16 +1,13 @@
-import { useRef, useEffect, useState, useCallback, Fragment, memo } from "react";
+import { useRef, useEffect, useCallback, Fragment, memo } from "react";
 import { useSetRecoilState } from "recoil";
 import PropTypes from "prop-types";
 
 import { playSelector } from "../../store";
 
-const Streaming = memo(({ onChangeCallback, dataUrlCallback }) => {
-  const setPlayState = useSetRecoilState(playSelector);
-  const [videoSource, setVideoSource] = useState({ src: null, type: "" });
-  const [base64, setBase64] = useState("");
-
+const Streaming = memo(({ dataUrlCallback, videoSource }) => {
   const captureArea = useRef();
   const interval = useRef();
+  const setPlayState = useSetRecoilState(playSelector);
 
   const videoPlayStateCallBack = useCallback(
     (e) => {
@@ -42,14 +39,13 @@ const Streaming = memo(({ onChangeCallback, dataUrlCallback }) => {
 
   const getDataUrl = (element) => {
     const canvas = document.createElement("canvas");
-    canvas.width = element.width * 2;
-    canvas.height = element.height * 2;
+    canvas.width = element.offsetWidth * 2;
+    canvas.height = element.offsetHeight * 2;
 
     const ctx = canvas.getContext("2d");
     ctx.drawImage(element, 0, 0, canvas.width, canvas.height);
 
     const dataURL = canvas.toDataURL();
-    setBase64(dataURL);
     canvas.remove();
 
     return {
@@ -58,37 +54,19 @@ const Streaming = memo(({ onChangeCallback, dataUrlCallback }) => {
     };
   };
 
-  const onChange = useCallback(
-    (e) => {
-      const selectFile = e.target.files[0];
-      if (selectFile) {
-        const blob = URL.createObjectURL(selectFile);
-        setVideoSource({ src: blob, type: selectFile.type });
-      }
-
-      const callbackData = {
-        path: e.target.value,
-      };
-
-      onChangeCallback(callbackData);
-    },
-    [onChangeCallback]
-  );
-
   return (
     <Fragment>
-      <img src={base64} height="45" width="80" alt="" />
-      <br />
-      <video ref={captureArea} autoPlay={true} controls={true} height="450" width="800" src={videoSource.src} type={videoSource.type} muted={true} />
-
-      <input type="file" onChange={onChange} />
+      <video ref={captureArea} autoPlay={true} controls={true} width="100%" src={videoSource.src} type={videoSource.type} muted={true} />
     </Fragment>
   );
 });
 
 Streaming.propTypes = {
-  onChangeCallback: PropTypes.func.isRequired,
   dataUrlCallback: PropTypes.func.isRequired,
+  videoSource: PropTypes.shape({
+    src: PropTypes.string,
+    type: PropTypes.string,
+  }),
 };
 
 export { Streaming };

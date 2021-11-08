@@ -1,0 +1,597 @@
+
+/** reset **/
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #eff1f7;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+a {
+  -webkit-transition: all 300ms ease-in-out;
+  -o-transition: all 300ms ease-in-out;
+  transition: all 300ms ease-in-out;
+}
+
+a:hover, a:focus {
+  text-decoration: none;
+  outline: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+figure {
+  margin: 0;
+}
+
+button {
+  border: none;
+}
+
+label {
+  padding: 0;
+  margin: 0;
+}
+
+/** LAYOUT **/
+section {
+  width: 100%;
+}
+
+.container {
+  max-width: 1500px;
+  padding: 2%;
+}
+
+/** COMMON **/
+.bg_dark {
+  background-color: #1c2238;
+}
+
+h2.title {
+  color: #fff;
+  font-size: 1.38rem;
+  font-weight: 200;
+  height: 40px;
+  vertical-align: top;
+}
+
+h3.title {
+  color: #1c2238;
+  font-size: 1.38rem;
+  font-weight: 300;
+  vertical-align: top;
+}
+
+h4.title {
+  color: #1c2238;
+  font-size: 1.2rem;
+  font-weight: 300;
+  vertical-align: top;
+  line-height: 140%;
+}
+
+.control {
+  width: 100%;
+  display: flex;
+  margin-top: 2%;
+}
+
+/** MODAL **/
+.modal-header {
+  background-color: #2d76e5;
+}
+.modal-header h5 {
+  font-size: 1.1rem;
+}
+.modal-header .btn-close-white {
+  opacity: 1;
+}
+.modal-title {
+  color: #fff;
+}
+.modal-footer {
+  border: none;
+}
+.modal-bg {
+  background-image: url(../images/alert_bg.png);
+  background-position: left center;
+}
+
+/** MODAL INPUT FILE **/
+.fileBox {
+  display: flex;
+  font-size: 0.9rem;
+  color: #222;
+}
+.fileBox .file-label {
+  padding-top: 5px;
+}
+.fileBox input.fileNmBox {
+  width: 60%;
+  border: 1px solid #ccc;
+  margin: 0 auto;
+}
+
+.fileBox label.btn-file {
+  border: 1px solid #ccc;
+  background-color: #eee;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+/** 버튼 **/
+.btn_blue {
+  background-color: #2d76e5!important;
+  color: #fff!important;
+  float: left;
+}
+
+.btn_gray {
+  background-color: #eee!important;
+  color: #333!important;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  padding: 5px 15px;
+  margin: 0 auto;
+}
+
+/** RADIO BUTTON **/
+.form-check {
+  line-height: 100%;
+  vertical-align: middle;
+  float: right;
+}
+
+.form-check label {
+  color: #fff;
+  font-size: 1rem;
+  margin: 8px 0 8px 10px;
+}
+
+/** 구분선 **/
+.line {
+  display: block;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+/** chart box **/
+.rounded {
+  border-radius: 1rem!important;
+}
+
+.bg {
+  background-color: #fff;
+}
+.border {
+  border-color: #bec5d9!important;
+}
+
+
+/* col 높이 정렬 */
+.row{
+  overflow: hidden; 
+}
+
+.row.equal-cols {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.row.equal-cols:before,
+.row.equal-cols:after {
+  display: block;
+}
+
+.row.equal-cols > [class*='col-'] {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.row.equal-cols > [class*='col-'] > * {
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto; 
+}
+
+@media screen and (max-width: 767px) {
+  .vod {
+    margin-bottom: 30px;
+  }
+  h2.title, h3.title { 
+    font-size: 16px; 
+  } 
+  .btn {
+    font-size: 14px;
+    width: 50%;
+    margin-right: -10px;
+  }
+  .form-check label {
+    color: #fff;
+    font-size: 12px;
+    word-spacing: -1px;
+    margin: 0px !important;
+    padding: 0;
+    width: 100%;
+  }
+}
+
+/** TIMELINE **/
+.scrollBar {
+  height: auto; 
+  max-height: 400px;
+  overflow: auto;
+}
+.timeline {
+    border-left: 2px solid #727cf5;
+    margin: 0 auto;
+    letter-spacing: 0.2px;
+    position: relative;
+    line-height: 1.4em;
+    font-size: 1.03em;
+    padding: 50px;
+    list-style: none;
+    text-align: left;
+    margin-left: 70px;
+}
+
+@media (max-width: 767px) {
+    .timeline {
+        max-width: 98%;
+        padding: 25px;
+    }
+}
+
+.timeline .event {
+    padding-bottom: 0;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+@media (max-width: 767px) {
+    .timeline .event {
+        padding-top: 30px;
+    }
+}
+
+.timeline .event:last-of-type {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border: none;
+}
+
+.timeline .event:before,
+.timeline .event:after {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+
+.timeline .event:before {
+    left: -207px;
+    content: attr(data-date);
+    text-align: right;
+    font-weight: 100;
+    font-size: 0.9em;
+    min-width: 120px;
+}
+
+@media (max-width: 767px) {
+    .timeline .event:before {
+        left: 0px;
+        text-align: left;
+    }
+}
+
+.timeline .event:after {
+    left: -60px;
+    background: #5364a1;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    content: "";
+    top: 3px;
+    border: 5px solid #cbd0e3;
+    cursor: pointer;
+}
+
+.timeline .btn_sky {
+  background-color: #697dc5;
+  border: 1px solid #384c95;
+  border-radius: 50px;
+  width: auto;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  color: #fff;
+  padding: 0 15px;
+}
+
+.timeline .btn_yellow {
+  background-color: #fdc005;
+  border: 1px solid #695215;
+  border-radius: 50px;
+  width: auto;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  color: #695215;
+  padding: 0 15px;
+}
+.timeline > li.on:after{
+  background: #fd6804;
+  border: 5px solid #fed1b3;
+}
+
+.timeline > li > button.on{
+  background-color: #fd6804;
+  border: 1px solid #732e00;
+  color: #fff;   
+
+}
+
+/** 타임라인 상세보기 **/
+span.time {
+  opacity: .7;
+}
+span.desc {
+  font-weight: bold;
+}
+
+.detailBox {
+  padding: 10px;
+}
+/** Team List **/
+.champLeader {
+  display: flex;
+  justify-content: space-between;
+}
+.champLeader img{
+  border: 10px solid;
+  border-radius: 20px;
+}
+.teamBlue {
+  color: #2d76e5;
+  border-color: #2d76e5;
+}
+.teamPurple {
+  color: #d630b6;
+  border-color: #d630b6;
+}
+.assistList ul{
+  display: flex;
+  justify-content: space-between;
+}
+.assistList li {
+  margin: 5px;
+}
+.assistList li img {
+  border-radius: 15px;
+}
+.itemList {
+  display: flex;
+  justify-content: space-between;
+}
+.itemList img {
+  border-radius: 15px;
+}
+
+@media (max-width: 767px) {
+  .champLeader div{
+      margin: 0 10px;
+  }
+  .itemList div{
+    margin: 0 10px;
+}
+}
+
+
+/** Map 동선 **/
+.mapSelect {
+  display: flex;
+  justify-content: space-between;
+}
+.mapSelect label {
+  font-size: 1.38rem;
+}
+.mapSelect select {
+  width: 80%;
+}
+.mapData table thead th {
+  background-color: #2d76e5!important;
+  color: #fff;
+}
+.mapData table {
+  text-align: center;
+}
+.mapData table tr:hover {
+  background-color: #e2ebf8;
+}
+.mapData thead {
+  border-bottom: none;
+}
+
+.searchSelect {
+  display: flex;
+  justify-content: space-between;
+}
+.searchSelect select {
+  width: 30%;
+}
+.searchSelect label {
+  margin-top: 5px;
+}
+.searchSelect .btn_blue2 {
+  background-color: #2d76e5!important;
+  color: #fff!important;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+}
+
+.searchRadio {
+  display: flex;
+  justify-content: space-between;
+}
+.btn-right {
+  margin-left: -5px;
+}
+
+.btn-secondary:hover {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #454545;
+}
+.btn-check:active+.btn-secondary {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #454545;
+}
+.btn-check:checked+.btn-secondary {
+  background-color: #ddd!important;
+  border: 1px solid #ccc;
+  color: #454545;
+}
+.btn-secondary {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #454545;
+  border-radius: 0;
+}
+
+.miniMap {
+  position: relative;
+}
+.teamFight {
+  position: absolute;
+  z-index: 10;
+}
+.miniMapBg {
+  position: absolute;
+}
+.mapBox{
+  position: relative;
+  width: 200px;
+  height: 160px;
+}
+.movement{
+  position: absolute;
+  z-index: 10;
+}
+.mapSmall{
+  position: absolute;
+}
+.resultMap ul{
+  display: flex;
+}
+.resultMap li {
+  margin: 10px;
+}
+.resultMap li p {
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .searchSelect {
+    display: inline;
+  }
+  .searchSelect select {
+    width: 100%;
+  }
+  .searchSelect .btn_blue2 {
+    background-color: #2d76e5!important;
+    color: #fff!important;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  .searchRadio {
+    display: block;
+  }
+  .btn-secondary {
+    width: 40%;
+  }
+  .teamGroup {
+    margin-bottom: 10px;
+  }
+  .positionGroup {
+    margin-bottom: 10px;
+  }
+  .timeline li button {
+    margin-bottom: 10px;
+  }
+
+  .resultMap {
+    padding: 0 25px;
+    width: 100%;
+  }
+  .resultMap ul {
+    display: inline-block;
+    text-align: center;
+  }
+  .resultMap ul li {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 30px;
+  }
+  .mapBox{
+    width: 200px;
+    height: 160px;
+    margin: 0 auto;
+  }
+
+  .miniMap {
+    position: relative;
+    width: 270px;
+    height: 170px;
+    margin-bottom: 50px;
+  }
+  .card {
+    margin: 0 28px;
+  }
+}
+@media (orientation: landscape) {
+	.resultMap {
+    margin-left: -30px;
+  }
+  .resultMap ul {
+    display: flex;
+  }
+  .miniMap {
+    width: 600px;
+    height: 500px;
+  }
+  .timeline li button {
+    margin-right: 10px;
+  }
+}

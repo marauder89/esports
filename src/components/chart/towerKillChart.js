@@ -10,12 +10,15 @@ const TowerKillChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).towerKillData;
   const options = {
     chart: {
-      height: 200,
       type: "bar",
+      height: 160,
+      style: {
+        margin: "0 auto",
+        width: "100%",
+      },
     },
     title: {
-      text: "Total Tower Kill",
-      align: "left",
+      text: "",
     },
     credits: {
       enabled: false,
@@ -25,11 +28,9 @@ const TowerKillChart = memo(() => {
     },
     yAxis: {
       min: 0,
-      // max: 100,
       title: {
         text: "",
       },
-      // tickPositions: [0, 25, 50, 75, 100],
     },
     series: [
       {
@@ -45,19 +46,6 @@ const TowerKillChart = memo(() => {
     ],
     xAxis: {
       categories: ["Blue", "Purple"],
-      // min: moment(0).valueOf(),
-      // max: moment(0).add(15, "minute").valueOf(),
-      // tickInterval: moment(0).add(5, "minute").valueOf(),
-      // labels: {
-      //   formatter: function () {
-      //     return Highcharts.dateFormat("%M:%S", this.value);
-      //   },
-      // },
-    },
-    tooltip: {
-      // formatter: function () {
-      //   return moment(this.x).format("mm:ss");
-      // },
     },
     plotOptions: {
       series: {

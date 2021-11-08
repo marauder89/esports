@@ -10,6 +10,7 @@ export const chartDataState = atom({
     towerKillData: { blue: 0, purple: 0 },
     levelData: { blue: [], purple: [] },
     skillData: { blue: [], purple: [] },
+    importanceData: {},
   },
 });
 
@@ -36,6 +37,7 @@ export const chartDataSelector = selector({
         blue: [newValue.blue_skill_top, newValue.blue_skill_jungle, newValue.blue_skill_middle, newValue.blue_skill_bottom, newValue.blue_skill_support],
         purple: [newValue.purple_skill_top, newValue.purple_skill_jungle, newValue.purple_skill_middle, newValue.purple_skill_bottom, newValue.purple_skill_support],
       },
+      importanceData: newValue.importance_features,
     };
 
     setRecoilState(chartDataState, chartData);

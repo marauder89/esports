@@ -7,8 +7,6 @@ import App from "./App";
 import { default as Routes } from "./Routes";
 import { RecoilRoot } from "recoil";
 
-import "./index.css";
-
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter basename={"esports"}>

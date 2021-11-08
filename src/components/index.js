@@ -1,5 +1,6 @@
 export { ChampionKillChart } from "./chart/ChampionKillChart";
 export { GoldChart } from "./chart/GoldChart";
+export { ImportanceFeaturesChart } from "./chart/ImportanceFeaturesChart";
 export { LevelChart } from "./chart/LevelChart";
 export { SkillChart } from "./chart/SkillChart";
 export { TowerKillChart } from "./chart/TowerKillChart";
@@ -10,5 +11,7 @@ export { KillBuildingEvent } from "./event/KillBuildingEvent";
 export { KillChampionEvent } from "./event/KillChampionEvent";
 export { KillObjectEvent } from "./event/KillObjectEvent";
 export { TeamFightEvent } from "./event/TeamFightEvent";
+
+export { GameVodPopup } from "./modal/GameVodPopup";
 
 export { Streaming } from "./video/Streaming";
