@@ -4,26 +4,34 @@ import PropTypes from "prop-types";
 
 import { playSelector } from "../../store";
 
-const Streaming = memo(({ dataUrlCallback, videoSource }) => {
+const Streaming = memo(({ dataUrlCallback, endedCallback, videoSource }) => {
   const captureArea = useRef();
   const interval = useRef();
   const setPlayState = useSetRecoilState(playSelector);
 
-  const videoPlayStateCallBack = useCallback(
+  const playEvent = useCallback(
     (e) => {
       if (e.type === "play") {
         setPlayState(true);
-      } else {
+      } else if (e.type === "pause") {
         setPlayState(false);
       }
     },
     [setPlayState]
   );
 
+  const endedEvent = useCallback(
+    (e) => {
+      endedCallback();
+    },
+    [endedCallback]
+  );
+
   useEffect(() => {
     const capture = captureArea.current;
-    capture.addEventListener("play", videoPlayStateCallBack, false);
-    capture.addEventListener("pause", videoPlayStateCallBack, false);
+    capture.addEventListener("play", playEvent, false);
+    capture.addEventListener("pause", playEvent, false);
+    capture.addEventListener("ended", endedEvent, false);
 
     interval.current = setInterval(() => {
       const callbackData = getDataUrl(capture);
@@ -32,10 +40,11 @@ const Streaming = memo(({ dataUrlCallback, videoSource }) => {
 
     return () => {
       clearInterval(interval.current);
-      capture.removeEventListener("play", videoPlayStateCallBack, false);
-      capture.removeEventListener("pause", videoPlayStateCallBack, false);
+      capture.removeEventListener("play", playEvent, false);
+      capture.removeEventListener("pause", playEvent, false);
+      capture.removeEventListener("ended", endedEvent, false);
     };
-  }, [videoPlayStateCallBack, dataUrlCallback]);
+  }, [playEvent, dataUrlCallback, endedEvent]);
 
   const getDataUrl = (element) => {
     const canvas = document.createElement("canvas");
@@ -63,6 +72,7 @@ const Streaming = memo(({ dataUrlCallback, videoSource }) => {
 
 Streaming.propTypes = {
   dataUrlCallback: PropTypes.func.isRequired,
+  endedCallback: PropTypes.func.isRequired,
   videoSource: PropTypes.shape({
     src: PropTypes.string,
     type: PropTypes.string,

@@ -3,39 +3,43 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 
 import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart, Streaming, GameVodPopup, ImportanceFeaturesChart } from "../../components";
 import { chartDataSelector, playState } from "../../store";
-import { LGA_1_1, LGA_1_2 } from "../../services";
+import { LGA_1_1, LGA_1_2, LGA_1_3 } from "../../services";
 
 const P1 = () => {
   const setChartData = useSetRecoilState(chartDataSelector);
-  const play = useRecoilValue(playState);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
+  const [model, setModel] = useState("Random Forest");
+  const play = useRecoilValue(playState);
 
-  const onFileConfirmCallback = useCallback((data) => {
-    const selectFile = data.files[0];
-    if (selectFile) {
-      const blob = URL.createObjectURL(selectFile);
-      setVideoSource({ src: blob, type: selectFile.type });
-    }
+  const onFileConfirmCallback = useCallback(
+    (data) => {
+      const selectFile = data.files[0];
+      if (selectFile) {
+        const blob = URL.createObjectURL(selectFile);
+        setVideoSource({ src: blob, type: selectFile.type });
+      }
 
-    const getLGA_1_1 = async () => {
-      const params = {
-        source: data.value,
-        model: "Random Forest",
-        options: {
-          opA: true,
-          opB: false,
-          opC: true,
-        },
+      const getLGA_1_1 = async () => {
+        const params = {
+          source: data.value,
+          model: model,
+          options: {
+            opA: true,
+            opB: false,
+            opC: true,
+          },
+        };
+        await LGA_1_1(params);
       };
-      await LGA_1_1(params);
-    };
-    getLGA_1_1();
-  }, []);
+      getLGA_1_1();
+    },
+    [model]
+  );
 
   const dataUrlCallback = useCallback(
     (data) => {
       if (play) {
-        const getChartData = async () => {
+        const getLGA_1_2 = async () => {
           const params = {
             b64encoded: data.b64encoded,
             index: data.index,
@@ -43,11 +47,22 @@ const P1 = () => {
           const _chartData = await LGA_1_2(params);
           setChartData(_chartData);
         };
-        getChartData();
+        getLGA_1_2();
       }
     },
     [play, setChartData]
   );
+
+  const endedCallback = useCallback((data) => {
+    const getLGA_1_3 = async () => {
+      await LGA_1_3({});
+    };
+    getLGA_1_3();
+  }, []);
+
+  const onChangeModel = useCallback((e) => {
+    setModel(e.target.value);
+  }, []);
 
   return (
     <Fragment>
@@ -59,7 +74,7 @@ const P1 = () => {
               <div className="m-2">
                 <div className="embed-responsive embed-responsive-16by9">
                   {/* <video src-="images/vod.mp4" width="100%" controls autoplay></video> */}
-                  <Streaming dataUrlCallback={dataUrlCallback} videoSource={videoSource} />
+                  <Streaming dataUrlCallback={dataUrlCallback} endedCallback={endedCallback} videoSource={videoSource} />
                 </div>
                 <div className="control">
                   <button type="button" className="btn btn_blue" data-bs-toggle="modal" data-bs-target="#gameVodPop">
@@ -67,11 +82,12 @@ const P1 = () => {
                   </button>
                   <div className="form-check">
                     <label>
-                      <input type="radio" name="radiobutoon" defaultValue="YES" defaultChecked /> Random Forest
+                      <input type="radio" name="model" defaultValue="Random Forest" onChange={onChangeModel} checked={model === "Random Forest"} /> Random Forest
                     </label>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <label>
-                      <input type="radio" name="radiobutoon" defaultValue="NO" /> Feed-Forward Neural Network
+                      <input type="radio" name="model" defaultValue="Feed-Forward Neural Network" onChange={onChangeModel} checked={model === "Feed-Forward Neural Network"} /> Feed-Forward Neural
+                      Network
                     </label>
                   </div>
                 </div>
