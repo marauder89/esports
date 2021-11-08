@@ -1,15 +1,73 @@
-import { useState, useCallback, Fragment } from "react";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useRef, useEffect, useState, useCallback, Fragment } from "react";
+import { useSetRecoilState } from "recoil";
 
-import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart, Streaming, GameVodPopup, ImportanceFeaturesChart } from "../../components";
-import { chartDataSelector, playState } from "../../store";
+import { ChampionKillChart, GoldChart, LevelChart, SkillChart, TowerKillChart, WinPredictionChart, GameVodPopup, ImportanceFeaturesChart } from "../../components";
+import { chartDataSelector } from "../../store";
 import { LGA_1_1, LGA_1_2, LGA_1_3 } from "../../services";
 
 const P1 = () => {
+  const captureArea = useRef();
+  const interval = useRef();
   const setChartData = useSetRecoilState(chartDataSelector);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
+  const [play, setPlay] = useState(false);
   const [model, setModel] = useState("Random Forest");
-  const play = useRecoilValue(playState);
+
+  const playEvent = useCallback(
+    (e) => {
+      if (e.type === "play") {
+        setPlay(true);
+      } else if (e.type === "pause") {
+        setPlay(false);
+      }
+    },
+    [setPlay]
+  );
+
+  const endedEvent = useCallback(() => {
+    const getLGA_1_3 = async () => {
+      await LGA_1_3({});
+    };
+    getLGA_1_3();
+  }, []);
+
+  useEffect(() => {
+    const capture = captureArea.current;
+    capture.addEventListener("play", playEvent, false);
+    capture.addEventListener("pause", playEvent, false);
+    capture.addEventListener("ended", endedEvent, false);
+
+    interval.current = setInterval(() => {
+      const canvas = document.createElement("canvas");
+      canvas.width = capture.offsetWidth * 2;
+      canvas.height = capture.offsetHeight * 2;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(capture, 0, 0, canvas.width, canvas.height);
+
+      const dataURL = canvas.toDataURL();
+      canvas.remove();
+
+      if (play) {
+        const getLGA_1_2 = async () => {
+          const params = {
+            b64encoded: dataURL,
+            index: Math.floor(capture.currentTime),
+          };
+          const _chartData = await LGA_1_2(params);
+          setChartData(_chartData);
+        };
+        getLGA_1_2();
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(interval.current);
+      capture.removeEventListener("play", playEvent, false);
+      capture.removeEventListener("pause", playEvent, false);
+      capture.removeEventListener("ended", endedEvent, false);
+    };
+  }, [play, playEvent, endedEvent, setChartData]);
 
   const onFileConfirmCallback = useCallback(
     (data) => {
@@ -36,30 +94,6 @@ const P1 = () => {
     [model]
   );
 
-  const dataUrlCallback = useCallback(
-    (data) => {
-      if (play) {
-        const getLGA_1_2 = async () => {
-          const params = {
-            b64encoded: data.b64encoded,
-            index: data.index,
-          };
-          const _chartData = await LGA_1_2(params);
-          setChartData(_chartData);
-        };
-        getLGA_1_2();
-      }
-    },
-    [play, setChartData]
-  );
-
-  const endedCallback = useCallback((data) => {
-    const getLGA_1_3 = async () => {
-      await LGA_1_3({});
-    };
-    getLGA_1_3();
-  }, []);
-
   const onChangeModel = useCallback((e) => {
     setModel(e.target.value);
   }, []);
@@ -73,8 +107,7 @@ const P1 = () => {
             <div className="col-md-6 vod">
               <div className="m-2">
                 <div className="embed-responsive embed-responsive-16by9">
-                  {/* <video src-="images/vod.mp4" width="100%" controls autoplay></video> */}
-                  <Streaming dataUrlCallback={dataUrlCallback} endedCallback={endedCallback} videoSource={videoSource} />
+                  <video ref={captureArea} autoPlay={true} controls={true} width="100%" src={videoSource.src} type={videoSource.type} muted={true} />
                 </div>
                 <div className="control">
                   <button type="button" className="btn btn_blue" data-bs-toggle="modal" data-bs-target="#gameVodPop">

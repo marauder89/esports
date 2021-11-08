@@ -1,3 +1,3 @@
 export { chartDataState, chartDataSelector } from "./chart/ChartData";
-export { eventComponentState, eventComponentSelector } from "./event/EventComponent";
+export { eventDataState, eventDataSelector } from "./event/EventData";
 export { playState, playSelector } from "./video/Streaming";

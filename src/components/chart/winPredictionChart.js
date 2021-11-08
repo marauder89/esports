@@ -13,7 +13,7 @@ const WinPredictionChart = memo(() => {
   const options = {
     chart: {
       type: "line",
-      height: 350,
+      height: 370,
       backgroundColor: null,
       style: {
         width: "100%",

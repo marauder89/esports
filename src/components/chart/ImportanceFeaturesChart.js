@@ -7,7 +7,6 @@ import { chartDataState } from "../../store";
 
 const ImportanceFeaturesChart = memo(() => {
   const chartData = useRecoilValue(chartDataState).importanceData;
-  console.log(chartData);
   const options = {
     chart: {
       type: "pie",
