@@ -13,5 +13,3 @@ export { KillObjectEvent } from "./event/KillObjectEvent";
 export { TeamFightEvent } from "./event/TeamFightEvent";
 
 export { GameVodPopup } from "./modal/GameVodPopup";
-
-export { Streaming } from "./video/Streaming";
