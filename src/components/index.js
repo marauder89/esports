@@ -6,10 +6,8 @@ export { SkillChart } from "./chart/SkillChart";
 export { TowerKillChart } from "./chart/TowerKillChart";
 export { WinPredictionChart } from "./chart/WinPredictionChart";
 
-export { BuyItemEvent } from "./event/BuyItemEvent";
-export { KillBuildingEvent } from "./event/KillBuildingEvent";
-export { KillChampionEvent } from "./event/KillChampionEvent";
-export { KillObjectEvent } from "./event/KillObjectEvent";
-export { TeamFightEvent } from "./event/TeamFightEvent";
+export { EventComponent } from "./event/EventComponent";
+export { TimeLine } from "./event/TimeLine";
+export { TeamFight } from "./event/TeamFight";
 
 export { GameVodPopup } from "./modal/GameVodPopup";

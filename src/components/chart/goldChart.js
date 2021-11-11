@@ -57,7 +57,7 @@ const GoldChart = memo(() => {
     xAxis: {
       type: "dateTime",
       min: moment(0).valueOf(),
-      max: moment(0).add(15, "minute").valueOf(),
+      // max: moment(0).add(15, "minute").valueOf(),
       tickInterval: moment(0).add(5, "minute").valueOf(),
       labels: {
         formatter: function () {

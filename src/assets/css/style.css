@@ -595,3 +595,9 @@ span.desc {
     margin-right: 10px;
   }
 }
+
+
+/* 개발자 추가 */
+.play-box{
+  text-align-last: center;
+}

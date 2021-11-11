@@ -1,19 +1,20 @@
 import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { GameVodPopup } from "../../components";
-import { eventDataState, eventDataSelector } from "../../store";
+import { GameVodPopup, EventComponent, TimeLine } from "../../components";
+import { eventListState, eventListSelector } from "../../store";
 import { IER_1_1, IER_1_2, IER_1_3 } from "../../services";
 
 const P2 = () => {
   const timeLineArea = useRef();
   const captureArea = useRef();
   const interval = useRef();
-  const setEventData = useSetRecoilState(eventDataSelector);
-  const eventData = useRecoilValue(eventDataState);
+  const setEventList = useSetRecoilState(eventListSelector);
+  const eventList = useRecoilValue(eventListState);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
   const [play, setPlay] = useState(false);
   const [model, setModel] = useState("Random Forest");
+  const [eventData, setEventData] = useState({});
 
   const playEvent = useCallback(
     (e) => {
@@ -57,15 +58,11 @@ const P2 = () => {
             index: Math.floor(capture.currentTime),
           };
           const _eventData = await IER_1_2(params);
-          setEventData(_eventData);
+          setEventList(_eventData);
         };
         getIER_1_2();
       }
     }, 5000);
-
-    if (timeLineArea.current) {
-      timeLineArea.current.scrollTop = timeLineArea.current.scrollHeight;
-    }
 
     return () => {
       clearInterval(interval.current);
@@ -73,7 +70,13 @@ const P2 = () => {
       capture.removeEventListener("pause", playEvent, false);
       capture.removeEventListener("ended", endedEvent, false);
     };
-  }, [play, playEvent, endedEvent, setEventData]);
+  }, [play, playEvent, endedEvent, setEventList]);
+
+  useEffect(() => {
+    if (timeLineArea.current) {
+      timeLineArea.current.scrollTop = timeLineArea.current.scrollHeight;
+    }
+  }, [eventList]);
 
   const onFileConfirmCallback = useCallback(
     (data) => {
@@ -104,54 +107,9 @@ const P2 = () => {
     setModel(e.target.value);
   }, []);
 
-  const timeLine = useCallback(() => {
-    return eventData.map((data, index) => {
-      switch (data.event_type) {
-        case "buy_item":
-          return (
-            <li className="event" data-date={data.time_stamp} key={index}>
-              <button type="button" className="btn btn_sky">
-                Buy Item
-              </button>
-            </li>
-          );
-        case "kill_building":
-          return (
-            <li className="event" data-date={data.time_stamp} key={index}>
-              <button type="button" className="btn btn_sky">
-                Kill Building
-              </button>
-            </li>
-          );
-        case "kill_champion":
-          return (
-            <li className="event" data-date={data.time_stamp} key={index}>
-              <button type="button" className="btn btn_sky">
-                Kill Champion
-              </button>
-            </li>
-          );
-        case "kill_object":
-          return (
-            <li className="event" data-date={data.time_stamp} key={index}>
-              <button type="button" className="btn btn_sky">
-                Kill Object
-              </button>
-            </li>
-          );
-        case "team_fight":
-          return (
-            <li className="event" data-date={data.time_stamp} key={index}>
-              <button type="button" className="btn btn_sky">
-                Team Fight
-              </button>
-            </li>
-          );
-        default:
-          return <li key={index}></li>;
-      }
-    });
-  }, [eventData]);
+  const onClickCallback = useCallback((data) => {
+    setEventData(data);
+  }, []);
 
   return (
     <Fragment>
@@ -189,50 +147,7 @@ const P2 = () => {
                     <div className="card-body">
                       <div ref={timeLineArea} className="scrollBar">
                         <ul className="timeline">
-                          {timeLine()}
-                          {/* <li className="event" data-date="5:50">
-                            <button type="button" className="btn btn_sky on">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" id="event2" data-date="6:05">
-                            <button type="button" className="btn btn_yellow">
-                              블루팀 퍼스트킬
-                            </button>
-                            <button type="button" className="btn btn_sky">
-                              블루팀 퍼스트킬
-                            </button>
-                          </li>
-                          <li className="event" id="event3" data-date="6:25">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" data-date="6:50">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" data-date="7:10">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" data-date="7:10">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" data-date="7:10">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li>
-                          <li className="event" data-date="7:10">
-                            <button type="button" className="btn btn_sky">
-                              Team Fight
-                            </button>
-                          </li> */}
+                          <TimeLine eventList={eventList} onClickCallback={onClickCallback} />
                         </ul>
                       </div>
                     </div>
@@ -244,67 +159,7 @@ const P2 = () => {
               <div className="m-3 p-4 rounded bg border">
                 <h4 className="title">⊙ 상세보기</h4>
                 <hr />
-                <div className="detailBox p-3" id="detail1">
-                  <p>
-                    <span className="time">00:50</span> <span className="desc">퍼플팀 : 아이템 구입</span>
-                  </p>
-                  <div className="miniMap">
-                    <div className="teamFight">
-                      <img src="images/fightCircle.png" />
-                    </div>
-                    <div className="miniMapBg" />
-                    <img src="images/miniMap.jpg" />
-                  </div>
-                </div>
-              </div>
-              <div className="detailBox p-3" id="detail2">
-                <p>
-                  <span className="time">00:50</span> <span className="desc">블루팀 : 퍼스트킬</span>
-                </p>
-                <div className="teamList">
-                  <div className="champLeader">
-                    <div className="leader1 teamBlue">
-                      <h5 className="posTitle">킬 챔피언</h5>
-                      <img src="images/leader1.jpg" />
-                    </div>
-                    <div className="leader2 teamPurple">
-                      <h5 className="posTitle">데스 챔피언</h5>
-                      <img src="images/leader2.jpg" />
-                    </div>
-                  </div>
-                  <div className="assistList mt-5">
-                    <h5 className="posTitle">어이스트 챔피언</h5>
-                    <ul>
-                      <li>
-                        <img src="images/assist1.jpg" />
-                      </li>
-                      <li>
-                        <img src="images/assist2.jpg" />
-                      </li>
-                      <li>
-                        <img src="images/assist3.jpg" />
-                      </li>
-                      <li>
-                        <img src="images/assist4.jpg" />
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="detailBox p-3" id="detail3">
-                <p>
-                  <span className="time">00:50</span> <span className="desc">퍼플팀 : 아이템 구입</span>
-                </p>
-                <div className="itemList">
-                  <div className="buyChamp teamBlue">
-                    <h5 className="posTitle">구매 챔피언</h5>
-                    <img src="images/itemChamp.jpg" />
-                  </div>
-                  <div className="itemG teamPurple">
-                    <h5 className="posTitle">아이템</h5>
-                    <img src="images/itemChamp.jpg" />
-                  </div>
-                </div>
+                <EventComponent eventData={eventData} />
               </div>
             </div>
           </div>
