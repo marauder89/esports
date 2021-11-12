@@ -21,7 +21,7 @@ export const chartDataSelector = selector({
     const minute = Number(newValue.time_stamp.split(":")[1]);
     const second = Number(newValue.time_stamp.split(":")[2]);
 
-    let dateTime = moment(0);
+    const dateTime = moment(0);
     dateTime.add(hour, "hour").add(minute, "minute").add(second, "second");
 
     const chartData = {

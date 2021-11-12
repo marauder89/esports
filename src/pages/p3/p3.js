@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { default as _ } from "lodash";
 import { Slider } from "@mui/material";
 
 import FastRewindIcon from "@mui/icons-material/FastRewind";
@@ -10,15 +10,21 @@ import StopIcon from "@mui/icons-material/Stop";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import IconButton from "@mui/material/IconButton";
 
-import { GameVodPopup, EventComponent, TimeLine } from "../../components";
-import { eventListState, eventListSelector } from "../../store";
-import { GPG_1_1, GPG_1_2, GPG_1_3 } from "../../services";
+import { loadImage } from "../../commons";
+import { Footprints } from "../../components";
+import { GPG_1_1, GPG_1_2 } from "../../services";
 
 const P3 = () => {
-  const [tierList, setTierList] = useState([{ name: "None", value: "" }]);
-  const [profilesData, setProfilesData] = useState([]);
-  const [play, setPlay] = useState(false);
+  const canvas = useRef();
+  const map = useRef();
   const { register, handleSubmit, setFocus } = useForm();
+  const [tierList, setTierList] = useState([{ name: "None", value: "" }]);
+  const [groupList, setGroupList] = useState([]);
+  const [profiles, setProfiles] = useState([]);
+  const [slideData, setSlideData] = useState([]);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [selectedGroup, setSelectedGroup] = useState("");
+  const [play, setPlay] = useState(false);
 
   const versionList = [
     { name: "None", value: "" },
@@ -34,13 +40,62 @@ const P3 = () => {
     setFocus("version");
   }, [setFocus]);
 
-  const onSubmit = useCallback((form) => {
+  useEffect(() => {
+    if (selectedGroup !== "" && profiles.length > 0) {
+      const profile = _.find(profiles, (profile) => profile.name === selectedGroup);
+      const representativeFootprint = profile.representative_footprint;
+      const _slideData = [];
+
+      Object.keys(representativeFootprint).forEach((key) => {
+        const width = 512;
+        const height = 512;
+        const xPos = representativeFootprint[key][0];
+        const yPos = representativeFootprint[key][1];
+
+        const drawX = width * xPos;
+        const drawY = height * yPos;
+        const time = Number(key.split("_")[1]);
+
+        _slideData.push({ time: time, x: drawX, y: height - drawY });
+      });
+      setSlideData(_slideData);
+    }
+  }, [selectedGroup, profiles]);
+
+  useEffect(() => {
+    loadImage("img/map/map11.png").then((img) => {
+      const ctx = canvas.current.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue) + 1;
+      const viewProfiles = slideData.filter((_, index) => index < sliderIndex);
+
+      ctx.beginPath();
+      ctx.moveTo(20, 490);
+
+      viewProfiles.forEach((data) => {
+        ctx.lineTo(data.x, data.y);
+      });
+
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      const base64 = canvas.current.toDataURL();
+      map.current.src = base64;
+    });
+  }, [sliderValue, slideData]);
+
+  const onSubmit = (form) => {
     const getGPG_1_2 = async () => {
-      const _profilesData = await GPG_1_2(form);
-      setProfilesData(_profilesData.profiles);
+      const _profileData = await GPG_1_2(form);
+
+      setGroupList(() => _profileData.index);
+      setSelectedGroup(_profileData.index[0]);
+      setProfiles(_profileData.profiles);
     };
     getGPG_1_2();
-  }, []);
+  };
 
   const onError = useCallback((errors, e) => {
     const field = Object.keys(errors)[0];
@@ -56,11 +111,15 @@ const P3 = () => {
   }, []);
 
   const onSliderChange = useCallback((e, value) => {
-    console.log(value);
+    setSliderValue(value);
   }, []);
 
   const sliderValueFormatter = useCallback((value) => {
-    return `${value} test`;
+    return `xy_${value}`;
+  }, []);
+
+  const onGroupChange = useCallback((e) => {
+    setSelectedGroup(e.target.value);
   }, []);
 
   const onChangeVersion = useCallback((el) => {
@@ -94,43 +153,45 @@ const P3 = () => {
               <div className="mapDataList m-3 p-4 rounded bg border">
                 <div className="mapSelect">
                   <label htmlFor="groupSelect">Group</label>
-                  <select className="form-select" defaultValue={""} disabled={profilesData.length < 1}>
-                    {profilesData.map((profile, index) => {
+                  <select className="form-select" value={selectedGroup} disabled={groupList.length < 1} onChange={onGroupChange}>
+                    {groupList.map((group, index) => {
                       return (
-                        <option key={index} value={profile.name} selected={index === 3}>
-                          {profile.name}
+                        <option key={index} value={group}>
+                          {group}
                         </option>
                       );
                     })}
                   </select>
                 </div>
                 <div className="mapMove mt-3">
-                  <img src="images/groupMap.jpg" />
+                  <img ref={map} src="img/map/map11.png" alt="map" />
+                  <canvas ref={canvas} width="512" height="512" hidden />
                   <Slider
-                    defaultValue={0}
-                    step={5}
+                    step={20}
+                    value={sliderValue}
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     getAriaValueText={sliderValueFormatter}
                     valueLabelFormat={sliderValueFormatter}
                     onChange={onSliderChange}
-                    disabled={profilesData.length < 1}
+                    max={slideData.length > 0 ? slideData[slideData.length - 1].time : 0}
+                    disabled={groupList.length < 1}
                   />
                   <div className="play-box">
-                    <IconButton aria-label="fastRewindIcon" onClick={() => onPlayBoxClick("fastRewind")} disabled={profilesData.length < 1}>
-                      <FastRewindIcon color={profilesData.length < 1 ? "disabled" : "primary"} />
+                    <IconButton aria-label="fastRewindIcon" onClick={() => onPlayBoxClick("fastRewind")} disabled={groupList.length < 1}>
+                      <FastRewindIcon color={groupList.length < 1 ? "disabled" : "primary"} />
                     </IconButton>
-                    <IconButton aria-label="playIcon" onClick={() => onPlayBoxClick("play")} hidden={play} disabled={profilesData.length < 1}>
-                      <PlayArrowIcon color={profilesData.length < 1 ? "disabled" : "primary"} />
+                    <IconButton aria-label="playIcon" onClick={() => onPlayBoxClick("play")} hidden={play} disabled={groupList.length < 1}>
+                      <PlayArrowIcon color={groupList.length < 1 ? "disabled" : "primary"} />
                     </IconButton>
-                    <IconButton aria-label="pauseIcon" onClick={() => onPlayBoxClick("pause")} hidden={!play} disabled={profilesData.length < 1}>
-                      <PauseIcon color={profilesData.length < 1 ? "disabled" : "primary"} />
+                    <IconButton aria-label="pauseIcon" onClick={() => onPlayBoxClick("pause")} hidden={!play} disabled={groupList.length < 1}>
+                      <PauseIcon color={groupList.length < 1 ? "disabled" : "primary"} />
                     </IconButton>
-                    <IconButton aria-label="stopIcon" onClick={() => onPlayBoxClick("stop")} disabled={profilesData.length < 1}>
-                      <StopIcon color={profilesData.length < 1 ? "disabled" : "primary"} />
+                    <IconButton aria-label="stopIcon" onClick={() => onPlayBoxClick("stop")} disabled={groupList.length < 1}>
+                      <StopIcon color={groupList.length < 1 ? "disabled" : "primary"} />
                     </IconButton>
-                    <IconButton aria-label="fastForwardIcon" onClick={() => onPlayBoxClick("fastForward")} disabled={profilesData.length < 1}>
-                      <FastForwardIcon color={profilesData.length < 1 ? "disabled" : "primary"} />
+                    <IconButton aria-label="fastForwardIcon" onClick={() => onPlayBoxClick("fastForward")} disabled={groupList.length < 1}>
+                      <FastForwardIcon color={groupList.length < 1 ? "disabled" : "primary"} />
                     </IconButton>
                   </div>
                 </div>
@@ -296,76 +357,7 @@ const P3 = () => {
                 </div>
                 <hr />
                 <div className="resultMap">
-                  <ul>
-                    <li>
-                      <p>Group A</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement1.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Group B</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement2.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Group C</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement3.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      <p>Group A</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement1.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Group B</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement2.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <p>Group C</p>
-                      <div className="mapBox">
-                        <div className="movement">
-                          <img src="images/movement3.png" />
-                        </div>
-                        <div className="mapSmall">
-                          <img src="images/resultMapSmall.png" />
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
+                  <Footprints profiles={profiles} />
                 </div>
               </div>
             </div>

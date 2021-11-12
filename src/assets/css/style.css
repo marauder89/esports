@@ -502,7 +502,7 @@ span.desc {
 .mapBox{
   position: relative;
   width: 200px;
-  height: 160px;
+  height: 200px;
 }
 .movement{
   position: absolute;
@@ -566,7 +566,7 @@ span.desc {
   }
   .mapBox{
     width: 200px;
-    height: 160px;
+    height: 200px;
     margin: 0 auto;
   }
 

@@ -1,7 +1,7 @@
 import { memo, useState, useEffect, useCallback, createRef, Fragment } from "react";
 import PropTypes from "prop-types";
 
-const TimeLine = memo(({ eventList, onClickCallback }) => {
+const TimeLine = memo(({ eventList, onTimeLineClickCallback }) => {
   const [eventRefs, setEventRefs] = useState([]);
   const eventLength = eventList.length;
 
@@ -20,9 +20,9 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
       });
 
       eventRefs[eventRefs.length - 1].current.classList.add("on");
-      onClickCallback(eventList[eventRefs.length - 1]);
+      onTimeLineClickCallback(eventList[eventRefs.length - 1]);
     }
-  }, [eventRefs, eventList, onClickCallback]);
+  }, [eventRefs, eventList, onTimeLineClickCallback]);
 
   const onEventClick = useCallback(
     (ref) => {
@@ -46,7 +46,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
                   type="button"
                   className="btn btn_sky"
                   onClick={() => {
-                    onClickCallback(data);
+                    onTimeLineClickCallback(data);
                     onEventClick(eventRefs[index]);
                   }}
                 >
@@ -62,7 +62,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
                   type="button"
                   className="btn btn_sky"
                   onClick={() => {
-                    onClickCallback(data);
+                    onTimeLineClickCallback(data);
                     onEventClick(eventRefs[index]);
                   }}
                 >
@@ -78,7 +78,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
                   type="button"
                   className="btn btn_sky"
                   onClick={() => {
-                    onClickCallback(data);
+                    onTimeLineClickCallback(data);
                     onEventClick(eventRefs[index]);
                   }}
                 >
@@ -94,7 +94,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
                   type="button"
                   className="btn btn_sky"
                   onClick={() => {
-                    onClickCallback(data);
+                    onTimeLineClickCallback(data);
                     onEventClick(eventRefs[index]);
                   }}
                 >
@@ -110,7 +110,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
                   type="button"
                   className="btn btn_sky"
                   onClick={() => {
-                    onClickCallback(data);
+                    onTimeLineClickCallback(data);
                     onEventClick(eventRefs[index]);
                   }}
                 >
@@ -128,7 +128,7 @@ const TimeLine = memo(({ eventList, onClickCallback }) => {
 
 TimeLine.propTypes = {
   eventList: PropTypes.array.isRequired,
-  onClickCallback: PropTypes.func.isRequired,
+  onTimeLineClickCallback: PropTypes.func.isRequired,
 };
 
 export { TimeLine };

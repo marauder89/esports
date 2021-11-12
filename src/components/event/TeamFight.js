@@ -1,8 +1,11 @@
 import { memo, Fragment, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
+import { loadImage } from "../../commons";
+
 const TeamFight = memo(({ eventData }) => {
   const canvas = useRef();
+  const map = useRef();
 
   useEffect(() => {
     if (eventData.event_structure) {
@@ -18,27 +21,19 @@ const TeamFight = memo(({ eventData }) => {
             const xPos = eventData.event_structure.location[0];
             const yPos = eventData.event_structure.location[1];
 
-            //fightcircle 중심좌표 88,106 이미지 크기 179,179 (이미지 크기 - 중심좌표)
-            const drawX = width * xPos - 91;
-            const drawY = height * yPos - 73;
+            //fightcircle 중심좌표 90,105 이미지 크기 179,179 (이미지 크기 - 중심좌표)
+            const drawX = width * xPos - 90;
+            const drawY = height * yPos + 105;
 
-            ctx.drawImage(img, drawX, drawY);
+            ctx.drawImage(img, drawX, height - drawY);
           }
         });
+
+        const base64 = canvas.current.toDataURL();
+        map.current.src = base64;
       });
     }
   }, [eventData]);
-
-  const loadImage = (url, alt) => {
-    return new Promise((resolve) => {
-      const image = new Image();
-      image.addEventListener("load", () => {
-        resolve(image);
-      });
-      image.src = url;
-      image.alt = alt;
-    });
-  };
 
   return (
     <Fragment>
@@ -47,7 +42,8 @@ const TeamFight = memo(({ eventData }) => {
           <span className="time">{eventData.time_stamp}</span> <span className="desc">Team Fight</span>
         </p>
         <div className="miniMap">
-          <canvas ref={canvas} width="512" height="512" />
+          <img ref={map} src="img/map/map11.png" alt="map" />
+          <canvas ref={canvas} width="512" height="512" hidden />
         </div>
       </div>
     </Fragment>

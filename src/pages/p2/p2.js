@@ -1,16 +1,13 @@
 import { useRef, useEffect, useState, useCallback, Fragment } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { GameVodPopup, EventComponent, TimeLine } from "../../components";
-import { eventListState, eventListSelector } from "../../store";
 import { IER_1_1, IER_1_2, IER_1_3 } from "../../services";
 
 const P2 = () => {
   const timeLineArea = useRef();
   const captureArea = useRef();
   const interval = useRef();
-  const setEventList = useSetRecoilState(eventListSelector);
-  const eventList = useRecoilValue(eventListState);
+  const [eventList, setEventList] = useState([]);
   const [videoSource, setVideoSource] = useState({ src: null, type: "" });
   const [play, setPlay] = useState(false);
   const [model, setModel] = useState("Random Forest");
@@ -58,7 +55,7 @@ const P2 = () => {
             index: Math.floor(capture.currentTime),
           };
           const _eventData = await IER_1_2(params);
-          setEventList(_eventData);
+          setEventList([...eventList, _eventData]);
         };
         getIER_1_2();
       }
@@ -70,7 +67,7 @@ const P2 = () => {
       capture.removeEventListener("pause", playEvent, false);
       capture.removeEventListener("ended", endedEvent, false);
     };
-  }, [play, playEvent, endedEvent, setEventList]);
+  }, [play, playEvent, endedEvent, eventList, setEventList]);
 
   useEffect(() => {
     if (timeLineArea.current) {
@@ -107,7 +104,7 @@ const P2 = () => {
     setModel(e.target.value);
   }, []);
 
-  const onClickCallback = useCallback((data) => {
+  const onTimeLineClickCallback = useCallback((data) => {
     setEventData(data);
   }, []);
 
@@ -147,7 +144,7 @@ const P2 = () => {
                     <div className="card-body">
                       <div ref={timeLineArea} className="scrollBar">
                         <ul className="timeline">
-                          <TimeLine eventList={eventList} onClickCallback={onClickCallback} />
+                          <TimeLine eventList={eventList} onTimeLineClickCallback={onTimeLineClickCallback} />
                         </ul>
                       </div>
                     </div>

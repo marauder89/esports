@@ -1,4 +1,4 @@
-import { default as axios } from "../../commons/axios/interceptor";
+import { axios } from "../../commons";
 
 const IER_1_1 = async (params) => {
   return await axios("post", { method: "IER_1_1", param: params }).then((res) => {

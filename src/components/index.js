@@ -11,3 +11,5 @@ export { TimeLine } from "./event/TimeLine";
 export { TeamFight } from "./event/TeamFight";
 
 export { GameVodPopup } from "./modal/GameVodPopup";
+
+export { Footprints } from "./profile/Footprints";

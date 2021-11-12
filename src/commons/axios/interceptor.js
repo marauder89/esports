@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../../commons/constants";
+import { BASE_URL } from "../constants";
 
 // const baseUrl = "http://ec2-13-125-224-246.ap-northeast-2.compute.amazonaws.com";
 
