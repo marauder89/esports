@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/esports/static/css/main.1838ce5e.chunk.css",
-    "main.js": "/esports/static/js/main.35b3a41e.chunk.js",
-    "main.js.map": "/esports/static/js/main.35b3a41e.chunk.js.map",
-    "runtime-main.js": "/esports/static/js/runtime-main.81f5db74.js",
-    "runtime-main.js.map": "/esports/static/js/runtime-main.81f5db74.js.map",
-    "static/js/2.2a596317.chunk.js": "/esports/static/js/2.2a596317.chunk.js",
-    "static/js/2.2a596317.chunk.js.map": "/esports/static/js/2.2a596317.chunk.js.map",
-    "static/js/3.05e4156e.chunk.js": "/esports/static/js/3.05e4156e.chunk.js",
-    "static/js/3.05e4156e.chunk.js.map": "/esports/static/js/3.05e4156e.chunk.js.map",
+    "main.css": "/esports/static/css/main.56762862.chunk.css",
+    "main.js": "/esports/static/js/main.5e16125f.chunk.js",
+    "main.js.map": "/esports/static/js/main.5e16125f.chunk.js.map",
+    "runtime-main.js": "/esports/static/js/runtime-main.4a648b18.js",
+    "runtime-main.js.map": "/esports/static/js/runtime-main.4a648b18.js.map",
+    "static/js/2.d0e57422.chunk.js": "/esports/static/js/2.d0e57422.chunk.js",
+    "static/js/2.d0e57422.chunk.js.map": "/esports/static/js/2.d0e57422.chunk.js.map",
+    "static/js/3.471a72c4.chunk.js": "/esports/static/js/3.471a72c4.chunk.js",
+    "static/js/3.471a72c4.chunk.js.map": "/esports/static/js/3.471a72c4.chunk.js.map",
     "index.html": "/esports/index.html",
-    "static/css/main.1838ce5e.chunk.css.map": "/esports/static/css/main.1838ce5e.chunk.css.map",
-    "static/js/2.2a596317.chunk.js.LICENSE.txt": "/esports/static/js/2.2a596317.chunk.js.LICENSE.txt"
+    "static/css/main.56762862.chunk.css.map": "/esports/static/css/main.56762862.chunk.css.map",
+    "static/js/2.d0e57422.chunk.js.LICENSE.txt": "/esports/static/js/2.d0e57422.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.81f5db74.js",
-    "static/js/2.2a596317.chunk.js",
-    "static/css/main.1838ce5e.chunk.css",
-    "static/js/main.35b3a41e.chunk.js"
+    "static/js/runtime-main.4a648b18.js",
+    "static/js/2.d0e57422.chunk.js",
+    "static/css/main.56762862.chunk.css",
+    "static/js/main.5e16125f.chunk.js"
   ]
 }
