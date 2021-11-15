@@ -17,11 +17,11 @@ const EventComponent = memo(({ eventData }) => {
             <div className="itemList">
               <div className="buyChamp teamBlue">
                 <h5 className="posTitle">구매 챔피언</h5>
-                <img src={`img/champion/${eventData.event_structure.buyer}.png`} alt={eventData.event_structure.buyer} />
+                <img src={`img/champion/${eventData.event_structure.buyer}.png`} style={{ width: "120px" }} alt={eventData.event_structure.buyer} />
               </div>
               <div className="itemG teamPurple">
                 <h5 className="posTitle">아이템</h5>
-                <img src={`img/item/${eventData.event_structure.item}.png`} alt={eventData.event_structure.item} />
+                <img src={`img/item/${eventData.event_structure.item}.png`} style={{ width: "120px" }} alt={eventData.event_structure.item} />
               </div>
             </div>
           </div>
@@ -37,11 +37,11 @@ const EventComponent = memo(({ eventData }) => {
               <div className="champLeader">
                 <div className="leader1 teamBlue">
                   <h5 className="posTitle">챔피언</h5>
-                  <img src={`img/champion/${eventData.event_structure.killer}.png`} alt={eventData.killer} />
+                  <img src={`img/champion/${eventData.event_structure.killer}.png`} style={{ width: "120px" }} alt={eventData.killer} />
                 </div>
                 <div className="leader2 teamPurple">
                   <h5 className="posTitle">포탑</h5>
-                  <img src={`img/tower/${eventData.event_structure.victim}.png`} alt={eventData.victim} />
+                  <img src={`img/tower/${eventData.event_structure.victim}.png`} style={{ width: "120px" }} alt={eventData.victim} />
                 </div>
               </div>
               <div className="assistList mt-5">
@@ -51,7 +51,7 @@ const EventComponent = memo(({ eventData }) => {
                     eventData.event_structure.assists.map((champion, index) => {
                       return (
                         <li key={index}>
-                          <img src={`img/champion/${champion}.png`} alt={champion} />
+                          <img src={`img/champion/${champion}.png`} style={{ width: "120px" }} alt={champion} />
                         </li>
                       );
                     })}
@@ -71,11 +71,11 @@ const EventComponent = memo(({ eventData }) => {
               <div className="champLeader">
                 <div className="leader1 teamBlue">
                   <h5 className="posTitle">킬 챔피언</h5>
-                  <img src={`img/champion/${eventData.event_structure.killer}.png`} alt={eventData.killer} />
+                  <img src={`img/champion/${eventData.event_structure.killer}.png`} style={{ width: "120px" }} alt={eventData.killer} />
                 </div>
                 <div className="leader2 teamPurple">
                   <h5 className="posTitle">데스 챔피언</h5>
-                  <img src={`img/champion/${eventData.event_structure.victim}.png`} alt={eventData.victim} />
+                  <img src={`img/champion/${eventData.event_structure.victim}.png`} style={{ width: "120px" }} alt={eventData.victim} />
                 </div>
               </div>
               <div className="assistList mt-5">
@@ -85,7 +85,7 @@ const EventComponent = memo(({ eventData }) => {
                     eventData.event_structure.assists.map((champion, index) => {
                       return (
                         <li key={index}>
-                          <img src={`img/champion/${champion}.png`} alt={champion} />
+                          <img src={`img/champion/${champion}.png`} style={{ width: "120px" }} alt={champion} />
                         </li>
                       );
                     })}
@@ -105,11 +105,11 @@ const EventComponent = memo(({ eventData }) => {
               <div className="champLeader">
                 <div className="leader1 teamBlue">
                   <h5 className="posTitle">챔피언</h5>
-                  <img src={`img/champion/${eventData.event_structure.killer}.png`} alt={eventData.killer} />
+                  <img src={`img/champion/${eventData.event_structure.killer}.png`} style={{ width: "120px" }} alt={eventData.killer} />
                 </div>
                 <div className="leader2 teamPurple">
                   <h5 className="posTitle">오브젝트</h5>
-                  <img src={`img/object/${eventData.event_structure.victim}.png`} alt={eventData.victim} />
+                  <img src={`img/object/${eventData.event_structure.victim}.png`} style={{ width: "120px" }} alt={eventData.victim} />
                 </div>
               </div>
               <div className="assistList mt-5">
@@ -119,7 +119,7 @@ const EventComponent = memo(({ eventData }) => {
                     eventData.event_structure.assists.map((champion, index) => {
                       return (
                         <li key={index}>
-                          <img src={`img/champion/${champion}.png`} alt={champion} />
+                          <img src={`img/champion/${champion}.png`} style={{ width: "120px" }} alt={champion} />
                         </li>
                       );
                     })}
