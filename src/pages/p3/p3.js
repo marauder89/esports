@@ -63,27 +63,29 @@ const P3 = () => {
   }, [selectedGroup, profiles]);
 
   useEffect(() => {
-    loadImage("img/map/map11.png").then((img) => {
-      const ctx = canvas.current.getContext("2d");
-      ctx.drawImage(img, 0, 0);
+    if (canvas.current) {
+      loadImage("img/map/map11.png").then((img) => {
+        const ctx = canvas.current.getContext("2d");
+        ctx.drawImage(img, 0, 0);
 
-      const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue) + 1;
-      const viewProfiles = slideData.filter((_, index) => index < sliderIndex);
+        const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue) + 1;
+        const viewProfiles = slideData.filter((_, index) => index < sliderIndex);
 
-      ctx.beginPath();
-      ctx.moveTo(20, 490);
+        ctx.beginPath();
+        ctx.moveTo(20, 490);
 
-      viewProfiles.forEach((data) => {
-        ctx.lineTo(data.x, data.y);
+        viewProfiles.forEach((data) => {
+          ctx.lineTo(data.x, data.y);
+        });
+
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        const base64 = canvas.current.toDataURL();
+        map.current.src = base64;
       });
-
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      const base64 = canvas.current.toDataURL();
-      map.current.src = base64;
-    });
+    }
   }, [sliderValue, slideData]);
 
   const onSubmit = (form) => {
