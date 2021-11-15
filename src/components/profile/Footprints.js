@@ -39,6 +39,25 @@ const Footprints = memo(({ profiles }) => {
     }
   }, [profilesLength]);
 
+  useEffect(() => {
+    if (mapRefs.length > 0) {
+      console.log(mapRefs);
+    }
+    // if (canvas.current) {
+    //   loadImage("img/map/map11.png").then((img) => {
+    //     const ctx = canvas.current.getContext("2d");
+    //     // ctx.drawImage(img, 0, 0);
+    //     console.log("asfd");
+    //     ctx.font = "48px serif";
+
+    //     ctx.strokeText("Hello dsdddddddddddddddddddddddworld", 0, 30);
+
+    //     const base64 = canvas.current.toDataURL();
+    //     map.current.src = base64;
+    //   });
+    // }
+  }, [mapRefs]);
+
   const chunkGroups = _.chunk(profiles, 3);
 
   return (
@@ -51,8 +70,8 @@ const Footprints = memo(({ profiles }) => {
                 <li key={liIndex}>
                   <p>Group {group.name}</p>
                   <div className="mapBox">
-                    <img ref={mapRefs[liIndex]} src="img/map/map11.png" alt="map" />
-                    <canvas ref={canvasRefs[liIndex]} width="512" height="512" hidden />
+                    <img ref={mapRefs[liIndex * (ulIndex + 1)]} src="img/map/map11.png" alt="map" />
+                    <canvas ref={canvasRefs[liIndex * (ulIndex + 1)]} width="512" height="512" hidden />
                   </div>
                 </li>
               );
