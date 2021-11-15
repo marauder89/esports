@@ -2,6 +2,7 @@ import { useRef, useEffect, useState, useCallback, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { default as _ } from "lodash";
 import { Slider } from "@mui/material";
+import moment from "moment";
 
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -11,8 +12,8 @@ import FastForwardIcon from "@mui/icons-material/FastForward";
 import IconButton from "@mui/material/IconButton";
 
 import { loadImage } from "../../commons";
-import { Footprints } from "../../components";
-import { GPG_1_1, GPG_1_2 } from "../../services";
+import { Footprints, Stats } from "../../components";
+import { GPG_1_1, GPG_1_2, GPG_1_3 } from "../../services";
 
 const P3 = () => {
   const canvas = useRef();
@@ -42,23 +43,35 @@ const P3 = () => {
 
   useEffect(() => {
     if (selectedGroup !== "" && profiles.length > 0) {
-      const profile = _.find(profiles, (profile) => profile.name === selectedGroup);
-      const representativeFootprint = profile.representative_footprint;
-      const _slideData = [];
+      const getGPG_1_3 = async () => {
+        const params = {
+          group: selectedGroup,
+          profiles: profiles,
+        };
+        const mins = 350;
+        const h = (mins / 60) | 0;
+        const m = mins % 60 | 0;
 
-      Object.keys(representativeFootprint).forEach((key) => {
-        const width = 512;
-        const height = 512;
-        const xPos = representativeFootprint[key][0];
-        const yPos = representativeFootprint[key][1];
+        console.log(h, m);
+        const _footprintData = await GPG_1_3(params);
+        const representativeFootprint = _footprintData.representative_footprint;
+        const _slideData = [];
 
-        const drawX = width * xPos;
-        const drawY = height * yPos;
-        const time = Number(key.split("_")[1]);
+        Object.keys(representativeFootprint).forEach((key) => {
+          const width = 512;
+          const height = 512;
+          const xPos = representativeFootprint[key][0];
+          const yPos = representativeFootprint[key][1];
 
-        _slideData.push({ time: time, x: drawX, y: height - drawY });
-      });
-      setSlideData(_slideData);
+          const drawX = width * xPos;
+          const drawY = height - height * yPos;
+          const time = Number(key.split("_")[1]);
+
+          _slideData.push({ time: time, x: drawX, y: drawY });
+        });
+        setSlideData(_slideData);
+      };
+      getGPG_1_3();
     }
   }, [selectedGroup, profiles]);
 
@@ -197,80 +210,7 @@ const P3 = () => {
                     </IconButton>
                   </div>
                 </div>
-                <div className="mapData mt-3 scrollBar">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th scope="col">Group</th>
-                        <th scope="col">Kill</th>
-                        <th scope="col">Death</th>
-                        <th scope="col">CS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">A</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">B</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">C</th>
-                        <td>5.7</td>
-                        <td>2.3</td>
-                        <td>15.6</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <Stats profiles={profiles} selectedGroup={selectedGroup} />
               </div>
             </div>
             <div className="col-md-6">

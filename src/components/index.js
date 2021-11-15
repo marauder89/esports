@@ -13,3 +13,4 @@ export { TeamFight } from "./event/TeamFight";
 export { GameVodPopup } from "./modal/GameVodPopup";
 
 export { Footprints } from "./profile/Footprints";
+export { Stats } from "./profile/Stats";
