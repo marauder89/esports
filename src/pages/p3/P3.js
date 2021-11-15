@@ -18,6 +18,7 @@ import { GPG_1_1, GPG_1_2, GPG_1_3 } from "../../services";
 const P3 = () => {
   const canvas = useRef();
   const map = useRef();
+  const interval = useRef();
   const { register, handleSubmit, setFocus } = useForm();
   const [tierList, setTierList] = useState([{ name: "None", value: "" }]);
   const [groupList, setGroupList] = useState([]);
@@ -42,20 +43,35 @@ const P3 = () => {
   }, [setFocus]);
 
   useEffect(() => {
+    if (play) {
+      const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue);
+      interval.current = setInterval(() => {
+        if (sliderIndex < slideData.length - 1 && 0 < slideData.length) {
+          setSliderValue(slideData[sliderIndex + 1].time);
+        } else if (sliderIndex === slideData.length - 1) {
+          setPlay(false);
+        }
+      }, 1000);
+    } else {
+      clearInterval(interval.current);
+    }
+
+    return () => {
+      clearInterval(interval.current);
+    };
+  }, [play, sliderValue, slideData]);
+
+  useEffect(() => {
     if (selectedGroup !== "" && profiles.length > 0) {
       const getGPG_1_3 = async () => {
         const params = {
           group: selectedGroup,
           profiles: profiles,
         };
-        const mins = 350;
-        const h = (mins / 60) | 0;
-        const m = mins % 60 | 0;
 
-        console.log(h, m);
         const _footprintData = await GPG_1_3(params);
         const representativeFootprint = _footprintData.representative_footprint;
-        const _slideData = [];
+        const _slideData = [{ time: 0, x: 20, y: 490 }]; //시작좌표
 
         Object.keys(representativeFootprint).forEach((key) => {
           const width = 512;
@@ -81,11 +97,10 @@ const P3 = () => {
         const ctx = canvas.current.getContext("2d");
         ctx.drawImage(img, 0, 0);
 
-        const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue) + 1;
-        const viewProfiles = slideData.filter((_, index) => index < sliderIndex);
+        const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue);
+        const viewProfiles = slideData.filter((_, index) => index < sliderIndex + 1);
 
         ctx.beginPath();
-        ctx.moveTo(20, 490);
 
         viewProfiles.forEach((data) => {
           ctx.lineTo(data.x, data.y);
@@ -117,20 +132,48 @@ const P3 = () => {
     alert(errors[field].message);
   }, []);
 
-  const onPlayBoxClick = useCallback((value) => {
-    if (value === "play") {
-      setPlay(true);
-    } else if (value === "pause") {
-      setPlay(false);
-    }
-  }, []);
+  const onPlayBoxClick = useCallback(
+    (value) => {
+      const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue);
+      switch (value) {
+        case "play":
+          setPlay(true);
+          break;
+        case "pause":
+          setPlay(false);
+          break;
+        case "stop":
+          setPlay(false);
+          setSliderValue(0);
+          break;
+        case "fastRewind":
+          setPlay(false);
+          if (0 < sliderIndex && 0 < slideData.length) {
+            setSliderValue(slideData[sliderIndex - 1].time);
+          }
+          break;
+        case "fastForward":
+          setPlay(false);
+          if (sliderIndex < slideData.length - 1 && 0 < slideData.length) {
+            setSliderValue(slideData[sliderIndex + 1].time);
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [slideData, sliderValue]
+  );
 
   const onSliderChange = useCallback((e, value) => {
     setSliderValue(value);
   }, []);
 
   const sliderValueFormatter = useCallback((value) => {
-    return `xy_${value}`;
+    const minute = (value / 60) | 0;
+    const second = value % 60 | 0;
+
+    return moment(0).minute(minute).second(second).format("mm:ss");
   }, []);
 
   const onGroupChange = useCallback((e) => {
