@@ -261,22 +261,22 @@ const P3 = () => {
                 <div className="searchForm">
                   <form>
                     <div className="searchSelect">
-                      <label htmlFor="tearSelect">Tear</label>
-                      <select className="form-select" defaultValue={""} {...register("tier", { required: "티어를 선택해 주세요." })}>
-                        {tierList.map((tier, index) => {
-                          return (
-                            <option key={index} value={tier.value}>
-                              {tier.name}
-                            </option>
-                          );
-                        })}
-                      </select>
                       <label htmlFor="versionSelect">Version</label>
                       <select className="form-select" defaultValue={""} {...register("version", { required: "버전을 선택해 주세요.", onChange: onChangeVersion })}>
                         {versionList.map((version, index) => {
                           return (
                             <option key={index} value={version.value}>
                               {version.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <label htmlFor="tierSelect">Tier</label>
+                      <select className="form-select" defaultValue={""} {...register("tier", { required: "티어를 선택해 주세요." })}>
+                        {tierList.map((tier, index) => {
+                          return (
+                            <option key={index} value={tier.value}>
+                              {tier.name}
                             </option>
                           );
                         })}

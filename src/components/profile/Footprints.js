@@ -55,7 +55,8 @@ const Footprints = memo(({ profiles }) => {
 
           ctx.font = "bold 45px serif";
           ctx.fillStyle = "#FFFFFF";
-          ctx.fillText(profile.feature_result.toFixed(1), 397, 497);
+
+          ctx.fillText(Number(profile.feature_result).toFixed(1), 397, 497);
 
           const base64 = canvasRefs[index].current.toDataURL();
           map.current.src = base64;
