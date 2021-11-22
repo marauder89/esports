@@ -33,9 +33,6 @@ const P3 = () => {
     { name: "11.13", value: 11.13 },
     { name: "11.14", value: 11.14 },
     { name: "11.15", value: 11.15 },
-    { name: "11.16", value: 11.16 },
-    { name: "11.17", value: 11.17 },
-    { name: "11.18", value: 11.18 },
   ];
 
   useEffect(() => {
@@ -100,15 +97,20 @@ const P3 = () => {
         const sliderIndex = _.findIndex(slideData, (data) => data.time === sliderValue);
         const viewProfiles = slideData.filter((_, index) => index < sliderIndex + 1);
 
-        ctx.beginPath();
+        viewProfiles.forEach((view, profileIndex) => {
+          if (profileIndex > 0) {
+            const opacity = 0.8 - 0.3 / profileIndex; //불투명 최대값 - 범위 / index
+            const transformColor = 255 / profileIndex; //RGB에서 G값 / index
 
-        viewProfiles.forEach((data) => {
-          ctx.lineTo(data.x, data.y);
+            ctx.beginPath();
+            ctx.moveTo(viewProfiles[profileIndex - 1].x, viewProfiles[profileIndex - 1].y);
+            ctx.lineTo(view.x, view.y);
+
+            ctx.strokeStyle = `rgb(235, ${transformColor}, 0, ${opacity})`;
+            ctx.lineWidth = 5;
+            ctx.stroke();
+          }
         });
-
-        ctx.strokeStyle = "red";
-        ctx.lineWidth = 3;
-        ctx.stroke();
 
         const base64 = canvas.current.toDataURL();
         map.current.src = base64;

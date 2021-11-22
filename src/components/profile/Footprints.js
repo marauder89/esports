@@ -4,6 +4,8 @@ import { default as _ } from "lodash";
 
 import { loadImage } from "../../commons";
 
+const colorSet = new Set(["rgb(30, 81 ,230, 0.6)", "rgb(255, 35, 28, 0.6)", "rgb(40, 230, 75, 0.6)"]);
+
 const Footprints = memo(({ profiles }) => {
   const [canvasRefs, setCanVasRefs] = useState([]);
   const [mapRefs, setMapRefs] = useState([]);
@@ -29,10 +31,12 @@ const Footprints = memo(({ profiles }) => {
           const profile = profiles[index];
           const ctx = canvasRefs[index].current.getContext("2d");
           ctx.drawImage(img, 0, 0);
+          ctx.strokeStyle = Array.from(colorSet)[index % 3];
+          ctx.lineWidth = 5;
 
-          ctx.beginPath();
           profile.footprints.forEach((footprint) => {
-            ctx.moveTo(20, 490);
+            const posArray = [{ x: 20, y: 490 }];
+
             Object.keys(footprint).forEach((key) => {
               const width = 512;
               const height = 512;
@@ -42,21 +46,31 @@ const Footprints = memo(({ profiles }) => {
               const drawX = width * xPos;
               const drawY = height - height * yPos;
 
-              ctx.lineTo(drawX, drawY);
+              posArray.push({ x: drawX, y: drawY });
+            });
+
+            posArray.forEach((pos, posIndex) => {
+              if (posIndex > 0) {
+                ctx.beginPath();
+                ctx.moveTo(posArray[posIndex - 1].x, posArray[posIndex - 1].y);
+                ctx.lineTo(pos.x, pos.y);
+
+                ctx.stroke();
+              }
             });
           });
 
-          ctx.strokeStyle = "red";
-          ctx.lineWidth = 3;
-          ctx.stroke();
+          const isKDA = profile.feature_result.includes("/");
+          const feature = isKDA ? profile.feature_result : Number(profile.feature_result).toFixed(2);
+          const width = feature.length * 29; //rect 넓이 자동 계산
 
           ctx.fillStyle = "#2d76e5";
-          ctx.fillRect(380, 450, 132, 65);
+          ctx.fillRect(512 - width, 450, width, 65); //x, y, width, height
 
           ctx.font = "bold 45px serif";
           ctx.fillStyle = "#FFFFFF";
 
-          ctx.fillText(Number(profile.feature_result).toFixed(1), 397, 497);
+          ctx.fillText(feature, 512 - width + width / 12, 497); //이미지 크기인 512에서 rect넓이에 따라 text위치 지정
 
           const base64 = canvasRefs[index].current.toDataURL();
           map.current.src = base64;
